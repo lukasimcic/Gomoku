@@ -1,4 +1,4 @@
-package logika;
+package splosno;
 
 public class Koordinati {
 	private int x;

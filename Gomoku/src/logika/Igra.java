@@ -2,8 +2,11 @@
 
 package logika;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import splosno.Koordinati;
 
 public class Igra {
 	
@@ -15,6 +18,8 @@ public class Igra {
 	private final List<Vrsta> VRSTE; // mozne kombinacije 5 zapordnih polj
 	
 	public Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
+	
+	public List<Koordinati> poteze = new ArrayList<>();
 	
 	public Igra(int N) {
 		this.N = N;
@@ -43,7 +48,7 @@ public class Igra {
 						(0 <= y + (M-1) * dy) && (y + (M-1) * dy < M)) {
 						int[] vrsta_x = new int[M];
 						int[] vrsta_y = new int[M];
-						for (int k = 0; k < N; k++) {
+						for (int k = 0; k < M; k++) {
 							vrsta_x[k] = x + dx * k;
 							vrsta_y[k] = y + dy * k;
 						}
@@ -67,7 +72,73 @@ public class Igra {
 		return ps;
 	}
 	
+	public boolean veljavnaPoteza(Koordinati p) {
+		return moznePoteze().contains(p);
+	}
 	
+	private Igralec cigavaVrsta(Vrsta t) {  // vrsta je 5 zaporednih polj v stolpcu, vrsti alpa diagonali
+		int count_B = 0;
+		int count_C = 0;
+		for (int k = 0; k < M && (count_B == 0 || count_C == 0); k++) {
+			switch (plosca[t.xList[k]][t.yList[k]]) {
+			case C: count_C += 1; break;
+			case B: count_B += 1; break;
+			case PRAZNO: break;
+			}
+		}
+		if (count_C == M) { return Igralec.C; }
+		else if (count_B == M) { return Igralec.B; }
+		else { return null; }
+	}
 	
+	public Vrsta zmagovalnaVrsta() {
+		for (Vrsta t : VRSTE) {
+			Igralec lastnik = cigavaVrsta(t);
+			if (lastnik != null) return t;
+		}
+		return null;
+	}
+	
+	public Stanje stanje() {
+		// Ali imamo zmagovalca?
+		Vrsta t = zmagovalnaVrsta();
+		if (t != null) {
+			switch (plosca[t.xList[0]][t.yList[0]]) {
+			case C: return Stanje.ZMAGA_C; 
+			case B: return Stanje.ZMAGA_B;
+			case PRAZNO: assert false;
+			}
+		}
+		// Ali imamo kakšno prazno polje?
+		// Èe ga imamo, igre ni konec in je nekdo na potezi
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				if (plosca[i][j] == Polje.PRAZNO) return Stanje.V_TEKU;
+			}
+		}
+		// Polje je polno, rezultat je neodloèen
+		return Stanje.NEODLOCENO;
+	}
+	
+	public boolean konec() {
+		return stanje() != Stanje.V_TEKU;
+	}
+	
+	public boolean odigraj(Koordinati p) {
+		if (plosca[p.getX()][p.getY()] == Polje.PRAZNO) {
+			plosca[p.getX()][p.getY()] = naPotezi.getPolje();
+			poteze.add(p);
+			naPotezi = naPotezi.nasprotnik();
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public void razveljaviZadnjoPotezo() {
+		Koordinati p = poteze.remove(poteze.size() - 1);
+		plosca[p.getX()][p.getY()] = Polje.PRAZNO;
+	}
 	
 }
