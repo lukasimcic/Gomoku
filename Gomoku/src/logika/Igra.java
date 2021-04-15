@@ -17,7 +17,7 @@ public class Igra {
 	
 	private final List<Vrsta> VRSTE; // mozne kombinacije 5 zapordnih polj
 	
-	public Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
+	public static Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
 	
 	public List<Koordinati> poteze = new ArrayList<>();
 	
@@ -34,6 +34,14 @@ public class Igra {
 		
 		naPotezi = Igralec.C;
 	} 
+	
+	public Igralec getIgralecNaPotezi() {
+		return naPotezi;
+	}
+	
+	public Polje[][] getPlosca () {
+		return plosca;
+	}
 
 	private List<Vrsta> vrste(int N) {
 		List<Vrsta> vrste = new LinkedList<Vrsta>();
