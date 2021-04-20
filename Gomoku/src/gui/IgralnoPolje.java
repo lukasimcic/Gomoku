@@ -24,7 +24,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 	
 	public IgralnoPolje() {
-		setBackground(new Color(245,222,179));
 		this.addMouseListener(this);		
 	}
 
@@ -81,6 +80,12 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 		double w = squareWidth();
 		
+		//kvadrat za pobarvati igralno polje
+		g2.setColor(new Color(245,222,179));
+		double x_0 = startingPoint()[0];
+		double y_0 = startingPoint()[1];
+		g2.fillRect((int) x_0, (int) y_0, 15 * (int)w, 15 * (int)w );
+		
 		/*
 		// èe imamo zmagovalno vrstico, njeno ozadje pobarvamo
 		Vrsta t = null;
@@ -101,10 +106,8 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		// TODO: popravi 15 v Igra.N
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
-		double x_0 = startingPoint()[0];
-		double y_0 = startingPoint()[1];
 		
-		for (int i = 1; i < 15; i++) {
+		for (int i = 0; i < 16; i++) {
 			g2.drawLine((int)(x_0 + (i * w)),
 					    (int)(y_0),
 					    (int)(x_0 + (i * w)),
