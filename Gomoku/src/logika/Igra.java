@@ -52,8 +52,8 @@ public class Igra {
 					int dx = s[0];
 					int dy = s[1];
 					// èe je skrajno polje terice še na plošèi, jo dodamo med terice
-					if ((0 <= x + (M-1) * dx ) && (x + (M-1) * dx < M) && 
-						(0 <= y + (M-1) * dy) && (y + (M-1) * dy < M)) {
+					if ((0 <= x + (M-1) * dx ) && (x + (M-1) * dx < N) && 
+						(0 <= y + (M-1) * dy) && (y + (M-1) * dy < N)) {
 						int[] vrsta_x = new int[M];
 						int[] vrsta_y = new int[M];
 						for (int k = 0; k < M; k++) {
@@ -65,6 +65,8 @@ public class Igra {
 				}
 			}
 		}
+		for (Vrsta i : vrste) System.out.println(i);
+		System.out.println(vrste.size());
 		return vrste;
 	}
 

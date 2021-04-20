@@ -74,10 +74,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		GridBagConstraints polje_layout = new GridBagConstraints();
 		polje_layout.gridx = 0;
 		polje_layout.gridy = 0;
-		polje_layout.fill = GridBagConstraints.BOTH;
 		polje_layout.anchor = GridBagConstraints.CENTER;
 		polje_layout.weightx = 1.0;
 		polje_layout.weighty = 1.0;
+		polje_layout.fill = GridBagConstraints.BOTH;
 		getContentPane().add(polje, polje_layout);
 		
 		// statusna vrstica za sporoèila
@@ -130,15 +130,15 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			case NEODLOCENO: status.setText("Neodloèeno!"); break;
 			case V_TEKU: 
 				status.setText("Na potezi je " + Vodja.igra.naPotezi + 
-						" - " + Vodja.vrstaIgralca.get(Vodja.igra.naPotezi)); 
+						" - " + Vodja.vrstaIgralca.get(Vodja.igra.naPotezi) + "."); 
 				break;
 			case ZMAGA_C: 
 				status.setText("Zmagal je èrni - " + 
-						Vodja.vrstaIgralca.get(Igralec.C));
+						Vodja.vrstaIgralca.get(Igralec.C) + ".");
 				break;
 			case ZMAGA_B: 
 				status.setText("Zmagal je beli - " + 
-						Vodja.vrstaIgralca.get(Igralec.B));
+						Vodja.vrstaIgralca.get(Igralec.B) + ".");
 				break;
 			}
 		}

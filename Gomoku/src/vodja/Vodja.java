@@ -30,6 +30,7 @@ public class Vodja {
 	// TODO: igra.naPotezi popravi
 	public static void igramo () {
 		okno.osveziGUI();
+		System.out.println(igra.stanje());
 		switch (igra.stanje()) {
 		case ZMAGA_C: 
 		case ZMAGA_B: 

@@ -14,4 +14,8 @@ public enum Igralec {
 	public Polje getPolje() {
 		return (this == C ? Polje.C : Polje.B);
 	}
+	
+	public String toString() {
+		return (this == C ? "èrni" : "beli");
+	}
 }

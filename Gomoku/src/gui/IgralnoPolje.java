@@ -16,21 +16,34 @@ import logika.Igra;
 import logika.Igralec;
 import logika.Polje;
 import logika.Vrsta;
-import splosno.Koordinati;;
+import splosno.Koordinati;
 
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
+
 	
 	public IgralnoPolje() {
-		setBackground(Color.YELLOW);
-		this.addMouseListener(this);
-		
+		setBackground(new Color(245,222,179));
+		this.addMouseListener(this);		
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(1000, 1000);
+		return new Dimension(600, 600);
+	}
+	
+	// centriranje èrt 
+	private double[] startingPoint() {
+		double x_0, y_0;
+		double begin = (getWidth() - getHeight()) / 2;
+		if (begin < 0) {
+			x_0 = 0; y_0 = - begin;
+			}
+		else {
+			x_0 = begin; y_0 = 0;
+			}
+		return new double[] {x_0, y_0};
 	}
 
 	
@@ -50,10 +63,12 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	 * V grafièni kontekst nariše figuro - krog z izbrano barvo
 	 */
 	private void paintCircle(Graphics2D g2, int i, int j, Igralec barvaIgralca) {
+		double x_0 = startingPoint()[0];
+		double y_0 = startingPoint()[1];
 		double w = squareWidth();
 		double d = w * (1.0 - LINE_WIDTH - 2.0 * PADDING); // premer O
-		double x = w * (i + 0.5 * LINE_WIDTH + PADDING);
-		double y = w * (j + 0.5 * LINE_WIDTH + PADDING);
+		double x = x_0 + w * (i + 0.5 * LINE_WIDTH + PADDING);
+		double y = y_0 + w * (j + 0.5 * LINE_WIDTH + PADDING);
 		if (barvaIgralca == Igralec.C) {g2.setColor(Color.BLACK);}
 		else {g2.setColor(Color.WHITE);}
 		g2.fillOval((int)x, (int)y, (int)d , (int)d);
@@ -81,19 +96,23 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		}
 		*/
 		
-		// èrte
+		// ÈRTE
+		// èrte zaènemo risati na sredini polja (hopefully)
 		// TODO: popravi 15 v Igra.N
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
+		double x_0 = startingPoint()[0];
+		double y_0 = startingPoint()[1];
+		
 		for (int i = 1; i < 15; i++) {
-			g2.drawLine((int)(i * w),
-					    (int)(0),
-					    (int)(i * w),
-					    (int)(15 * w));
-			g2.drawLine((int)(0),
-					    (int)(i * w),
-					    (int)(15 * w),
-					    (int)(i * w));
+			g2.drawLine((int)(x_0 + (i * w)),
+					    (int)(y_0),
+					    (int)(x_0 + (i * w)),
+					    (int)(y_0 + (15 * w)));
+			g2.drawLine((int)(x_0),
+					    (int)(y_0 + (i * w)),
+					    (int)(x_0 + (15 * w)),
+					    (int)(y_0 + (i * w)));
 		}
 		
 		// Na vsakem kvadratku v polju nariše figure, èe kvadratek ni prazen 
@@ -116,15 +135,17 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	// spet 15 -> Igra.N
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(MouseEvent e) {		
 		if (Vodja.clovekNaVrsti) {
+			int x_0 = (int) startingPoint()[0];
+			int y_0 = (int) startingPoint()[1];
 			int x = e.getX();
 			int y = e.getY();
 			int w = (int)(squareWidth());
-			int i = x / w ;
-			double di = (x % w) / squareWidth() ;
-			int j = y / w ;
-			double dj = (y % w) / squareWidth() ;
+			int i = (x - x_0) / w ;
+			double di = ((x - x_0) % w) / squareWidth() ;
+			int j = (y - y_0) / w ;
+			double dj = ((y - y_0) % w) / squareWidth() ;
 			if (0 <= i && i < 15 &&
 					0.5 * LINE_WIDTH < di && di < 1.0 - 0.5 * LINE_WIDTH &&
 					0 <= j && j < 15 && 
