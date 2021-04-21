@@ -21,7 +21,8 @@ public class Vodja {
 	public static Igra igra = null;
 	
 	public static boolean clovekNaVrsti = false;
-		
+	
+	// ustvari novo igro - objekt razreda Igra in jo požene z metodo igramo()
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
 		igramo ();
@@ -50,7 +51,8 @@ public class Vodja {
 	}
 	
 	private static Random random = new Random ();
-	
+
+	// v igri raè-raè na vsaki potezi èaka 2s in popravi grafiko - plošèo s figurami šele ko se igra konèa.
 //	public static void igrajRacunalnikovoPotezo() {
 //		List<Koordinati> moznePoteze = igra.poteze();
 //		try {TimeUnit.SECONDS.sleep(2);} catch (Exception e) {};
@@ -60,8 +62,9 @@ public class Vodja {
 //		igramo ();
 //	}
 	
+	// Odigra raèunalnikovo potezo. Preden odigra poèaka 2s, nato odigra in posodobi grafiko-nariše potezo.
 	public static void igrajRacunalnikovoPotezo() {
-		Igra zacetkaIgra = igra;
+		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
 			protected Koordinati doInBackground() {
@@ -74,7 +77,8 @@ public class Vodja {
 			protected void done () {
 				Koordinati poteza = null;
 				try {poteza = get();} catch (Exception e) {};
-				if (igra == zacetkaIgra) {
+				// preveri èe uporabnik med izvajanjem ni spremenil igre, t. j. da ni v meniju izbral nove igre, saj potem ne želimo odigrati poteze na stari igri
+				if (igra == zacetnaIgra) {
 					igra.odigraj(poteza);
 					igramo ();
 				}
