@@ -22,6 +22,8 @@ public class Vodja {
 	
 	public static boolean clovekNaVrsti = false;
 	
+	public static int odzivniCasRacunalnika = 2;
+	
 	// ustvari novo igro - objekt razreda Igra in jo požene z metodo igramo()
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
@@ -68,7 +70,7 @@ public class Vodja {
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
 			protected Koordinati doInBackground() {
-				try {TimeUnit.SECONDS.sleep(2);} catch (Exception e) {};
+				try {TimeUnit.SECONDS.sleep(odzivniCasRacunalnika);} catch (Exception e) {};
 				List<Koordinati> moznePoteze = igra.moznePoteze();
 				int randomIndex = random.nextInt(moznePoteze.size());
 				return moznePoteze.get(randomIndex);

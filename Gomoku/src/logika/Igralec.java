@@ -7,8 +7,7 @@ package logika;
 public enum Igralec {
 	C, B;
 	
-	public String imeC = "ime_èrni";
-	public String imeB = "ime_beli";
+	public String ime = "ime";
 
 	public Igralec nasprotnik() {
 		return (this == C ? B : C);
@@ -19,6 +18,6 @@ public enum Igralec {
 	}
 	
 	public String toString() {
-		return (this == C ? imeC : imeB);
+		return ime;
 	}
 }

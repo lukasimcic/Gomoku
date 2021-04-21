@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -8,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
 
+import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -156,8 +158,29 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				new JLabel("Vnesi ime èrnega: "), imeCrni
 			};
 			int izbira = JOptionPane.showConfirmDialog(this, polja, "Input", JOptionPane.OK_CANCEL_OPTION);
-			if (izbira == JOptionPane.OK_OPTION && imeBeli.getText().matches("\\w+") && imeCrni.getText().matches("\\w+")) {
-				return;
+			// if (izbira == JOptionPane.OK_OPTION && imeBeli.getText().matches("\\w+") && imeCrni.getText().matches("\\w+")) {
+			// TODO: ime je lahko samo beseda in ne stevilka
+			if (izbira == JOptionPane.OK_OPTION) {
+				// igra.naPotezi.imeB = "jnkjas"
+				// TODO: implementacija imen
+				return;	
+			}
+		}
+		else if (e.getSource() == algoritem) {
+			// TODO: vse pri algoritmu
+			return;
+		}
+		else if (e.getSource() == cas) {
+			String casRacunalnika = JOptionPane.showInputDialog(this, "Odzivni èas raèunalnika: ");
+			if (casRacunalnika != null && casRacunalnika.matches("\\d+")) {
+				Vodja.odzivniCasRacunalnika = Integer.parseInt(casRacunalnika);
+			}
+		}
+		else if (e.getSource() == barvaOzadja) {
+			Color barva = JColorChooser.showDialog(this, "Izberi barvo ozadja", polje.barvaOzadja);
+			if (barva != null)  {
+				polje.barvaOzadja = barva;
+				polje.repaint();
 			}
 		}
 	}
@@ -170,8 +193,8 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			switch(Vodja.igra.stanje()) {
 			case NEODLOCENO: status.setText("Neodloèeno!"); break;
 			case V_TEKU: 
-				status.setText("Na potezi je " + Vodja.igra.naPotezi + 
-						" - " + Vodja.vrstaIgralca.get(Vodja.igra.naPotezi) + "."); 
+				status.setText("Na potezi je " + Vodja.igra.getIgralecNaPotezi() + 
+						" - " + Vodja.vrstaIgralca.get(Vodja.igra.getIgralecNaPotezi()) + "."); 
 				break;
 			case ZMAGA_C: 
 				status.setText("Zmagal je èrni - " + 

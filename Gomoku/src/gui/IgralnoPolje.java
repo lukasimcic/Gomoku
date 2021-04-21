@@ -58,6 +58,8 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	// Relativni prostor okoli figur 
 	private final static double PADDING = 0.18;
 	
+	public Color barvaOzadja = new Color(245,222,179);
+	
 	/*
 	 * V grafièni kontekst nariše figuro - krog z izbrano barvo
 	 */
@@ -81,25 +83,24 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		double w = squareWidth();
 		
 		//kvadrat za pobarvati igralno polje
-		g2.setColor(new Color(245,222,179));
+		g2.setColor(barvaOzadja);
 		double x_0 = startingPoint()[0];
 		double y_0 = startingPoint()[1];
 		g2.fillRect((int) x_0, (int) y_0, 15 * (int)w, 15 * (int)w );
 		
-		/*
+		
 		// èe imamo zmagovalno vrstico, njeno ozadje pobarvamo
 		Vrsta t = null;
 		if (Vodja.igra != null) {t = Vodja.igra.zmagovalnaVrsta();}
 		if (t != null) {
 			g2.setColor(new Color(255, 255, 196));
-			TODO: popravi k < 15 v parameter Igra.N
-			for (int k = 0; k < 15; k++) {
+			for (int k = 0; k < 5; k++) {
 				int i = t.xList[k];
 				int j = t.yList[k];
-				g2.fillRect((int)(w * i), (int)(w * j), (int)w, (int)w);
+				g2.fillRect((int)(x_0 + w * i), (int)(y_0 + w * j), (int)w, (int)w);
 			}
 		}
-		*/
+		
 		
 		// ÈRTE
 		// èrte zaènemo risati na sredini polja (hopefully)
