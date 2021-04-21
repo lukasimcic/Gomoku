@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import vodja.Vodja;
 
-import logika.Igra;
 import logika.Igralec;
 import logika.Polje;
 import logika.Vrsta;
