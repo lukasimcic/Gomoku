@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -12,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 import vodja.Vodja;
 import vodja.VrstaIgralca;
@@ -32,6 +35,11 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem igraRacunalnikClovek;
 	private JMenuItem igraClovekClovek;
 	private JMenuItem igraRacunalnikRacunalnik;
+	private JMenuItem velikost;
+	private JMenuItem ime;
+	private JMenuItem algoritem;
+	private JMenuItem cas;
+	private JMenuItem barvaOzadja;
 
 
 	private int N;
@@ -47,27 +55,29 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		this.setLayout(new GridBagLayout());
 	
 		// menu
+		
+		
 		JMenuBar menu_bar = new JMenuBar();
 		this.setJMenuBar(menu_bar);
-		JMenu igra_menu = new JMenu("Izberi vrsto igre");
-		menu_bar.add(igra_menu);
-
-		igraClovekRacunalnik = new JMenuItem("Èlovek – raèunalnik");
-		igra_menu.add(igraClovekRacunalnik);
-		igraClovekRacunalnik.addActionListener(this);
 		
-		igraRacunalnikClovek = new JMenuItem("Raèunalnik – èlovek");
-		igra_menu.add(igraRacunalnikClovek);
-		igraRacunalnikClovek.addActionListener(this);
+		JMenu vrsta_igre = dodajMenu(menu_bar, "vrsta igre");
+		JMenu velikost_igre = dodajMenu(menu_bar, "velikost igre");
+		JMenu lastnosti_igralcev = dodajMenu(menu_bar, "lastnosti igralcev");
+		JMenu lastnosti_graficnega_vmesnika = dodajMenu(menu_bar, "lastnosti grafiènega vmesnika");
 		
-		igraClovekClovek = new JMenuItem("Èlovek – èlovek");
-		igra_menu.add(igraClovekClovek);
-		igraClovekClovek.addActionListener(this);
+		igraClovekRacunalnik = dodajMenuItem(vrsta_igre, "èlovek – raèunalnik");
+		igraRacunalnikClovek = dodajMenuItem(vrsta_igre, "raèunalnik – èlovek");
+		igraClovekClovek = dodajMenuItem(vrsta_igre, "èlovek – èlovek");
+		igraRacunalnikRacunalnik = dodajMenuItem(vrsta_igre, "raèunalnik – raèunalnik");
 		
-		igraRacunalnikRacunalnik = new JMenuItem("Raèunalnik – raèunalnik");
-		igra_menu.add(igraRacunalnikRacunalnik);
-		igraRacunalnikRacunalnik.addActionListener(this);
-
+		velikost = dodajMenuItem(velikost_igre, "izberi velikost");
+		
+		ime = dodajMenuItem(lastnosti_igralcev, "imena igralcev");
+		algoritem = dodajMenuItem(lastnosti_igralcev, "algoritem");
+		cas = dodajMenuItem(lastnosti_igralcev, "èas raèunalnika");
+		
+		barvaOzadja = dodajMenuItem(lastnosti_graficnega_vmesnika, "barva ozadja");
+		
 		// igralno polje
 		polje = new IgralnoPolje();
 
@@ -95,6 +105,18 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 	}
 	
+	public JMenu dodajMenu(JMenuBar menubar, String naslov) {
+		JMenu menu = new JMenu(naslov);
+		menubar.add(menu);
+		return menu;
+	}
+	
+	public JMenuItem dodajMenuItem(JMenu menu, String naslov) {
+		JMenuItem menuitem = new JMenuItem(naslov);
+		menu.add(menuitem);
+		menuitem.addActionListener(this);
+		return menuitem;
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -103,21 +125,40 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.vrstaIgralca.put(Igralec.C, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.B, VrstaIgralca.R);
 			Vodja.igramoNovoIgro(this.N);
-		} else if (e.getSource() == igraRacunalnikClovek) {
+		} 
+		else if (e.getSource() == igraRacunalnikClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.C, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.B, VrstaIgralca.C);
 			Vodja.igramoNovoIgro(this.N);
-		} else if (e.getSource() == igraClovekClovek) {
+		} 
+		else if (e.getSource() == igraClovekClovek) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.C, VrstaIgralca.C); 
 			Vodja.vrstaIgralca.put(Igralec.B, VrstaIgralca.C);
 			Vodja.igramoNovoIgro(this.N);
-		} else if (e.getSource() == igraRacunalnikRacunalnik) {
+		} 
+		else if (e.getSource() == igraRacunalnikRacunalnik) {
 			Vodja.vrstaIgralca = new EnumMap<Igralec,VrstaIgralca>(Igralec.class);
 			Vodja.vrstaIgralca.put(Igralec.C, VrstaIgralca.R); 
 			Vodja.vrstaIgralca.put(Igralec.B, VrstaIgralca.R);
 			Vodja.igramoNovoIgro(this.N);
+		} 
+		else if (e.getSource() == velikost) {
+			// TODO: moramo povsod spremeniti iz 15 v N
+			return;
+		}
+		else if (e.getSource() == ime) {
+			JTextField imeBeli = new JTextField();
+			JTextField imeCrni = new JTextField();
+			Component[] polja = {
+				new JLabel("Vnesi ime belega: "), imeBeli, 
+				new JLabel("Vnesi ime èrnega: "), imeCrni
+			};
+			int izbira = JOptionPane.showConfirmDialog(this, polja, "Input", JOptionPane.OK_CANCEL_OPTION);
+			if (izbira == JOptionPane.OK_OPTION && imeBeli.getText().matches("\\w+") && imeCrni.getText().matches("\\w+")) {
+				return;
+			}
 		}
 	}
 
