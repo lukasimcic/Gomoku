@@ -153,7 +153,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.igramoNovoIgro(this.N);
 		} 
 		else if (e.getSource() == velikost) {
-			String velikost = JOptionPane.showInputDialog(this, "Odzivni èas raèunalnika: ");
+			String velikost = JOptionPane.showInputDialog(this, "Velikost polja: ");
 			if (velikost != null && velikost.matches("\\d+") && (Vodja.igra == null || Vodja.igra.stanje() != Stanje.V_TEKU)) {
 				this.N = Integer.parseInt(velikost);
 				polje.N = this.N;
