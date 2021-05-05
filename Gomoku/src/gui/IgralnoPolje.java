@@ -20,12 +20,15 @@ import splosno.Koordinati;
 
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
-
 	
-	public IgralnoPolje() {
-		this.addMouseListener(this);		
+	// velikost polja
+	public int N;
+	
+	public IgralnoPolje(int N) {
+		this.addMouseListener(this);
+		this.N = N;
 	}
-
+	
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
@@ -43,15 +46,14 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			}
 		return new double[] {x_0, y_0};
 	}
-
+	
 	
 	// Relativna širina èrte
 	private final static double LINE_WIDTH = 0.08;
 	
 	// Širina enega kvadratka
 	private double squareWidth() {
-		return Math.min(getWidth(), getHeight()) / 15;
-		/* TODO: stevilo 15 popravi v parameter N iz razreda Igra*/
+		return Math.min(getWidth(), getHeight()) / N;
 	}
 	
 	// Relativni prostor okoli figur 
@@ -85,7 +87,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		g2.setColor(barvaOzadja);
 		double x_0 = startingPoint()[0];
 		double y_0 = startingPoint()[1];
-		g2.fillRect((int) x_0, (int) y_0, 15 * (int)w, 15 * (int)w );
+		g2.fillRect((int) x_0, (int) y_0, N * (int)w, N * (int)w );
 		
 		
 		// èe imamo zmagovalno vrstico, njeno ozadje pobarvamo
@@ -103,28 +105,26 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		
 		// ÈRTE
 		// èrte zaènemo risati na sredini polja (hopefully)
-		// TODO: popravi 15 v Igra.N
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < N + 1; i++) {
 			g2.drawLine((int)(x_0 + (i * w)),
 					    (int)(y_0),
 					    (int)(x_0 + (i * w)),
-					    (int)(y_0 + (15 * w)));
+					    (int)(y_0 + (N * w)));
 			g2.drawLine((int)(x_0),
 					    (int)(y_0 + (i * w)),
-					    (int)(x_0 + (15 * w)),
+					    (int)(x_0 + (N * w)),
 					    (int)(y_0 + (i * w)));
 		}
 		
 		// Na vsakem kvadratku v polju nariše figure, èe kvadratek ni prazen 
-		// TODO 15 -> Igra.N
 		Polje[][] plosca;;
 		if (Vodja.igra != null) {
 			plosca = Vodja.igra.getPlosca();
-			for (int i = 0; i < 15; i++) {
-				for (int j = 0; j < 15; j++) {
+			for (int i = 0; i < N; i++) {
+				for (int j = 0; j < N; j++) {
 					switch(plosca[i][j]) {
 					case B: paintCircle(g2, i, j, Igralec.B); break;
 					case C: paintCircle(g2, i, j, Igralec.C); break;
@@ -136,7 +136,6 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		
 	}
 	
-	// spet 15 -> Igra.N
 	@Override
 	public void mouseClicked(MouseEvent e) {		
 		if (Vodja.clovekNaVrsti) {
@@ -149,9 +148,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			double di = ((x - x_0) % w) / squareWidth() ;
 			int j = (y - y_0) / w ;
 			double dj = ((y - y_0) % w) / squareWidth() ;
-			if (0 <= i && i < 15 &&
+			if (0 <= i && i < N &&
 					0.5 * LINE_WIDTH < di && di < 1.0 - 0.5 * LINE_WIDTH &&
-					0 <= j && j < 15 && 
+					0 <= j && j < N && 
 					0.5 * LINE_WIDTH < dj && dj < 1.0 - 0.5 * LINE_WIDTH) {
 				Vodja.igrajClovekovoPotezo (new Koordinati(i, j));
 			}

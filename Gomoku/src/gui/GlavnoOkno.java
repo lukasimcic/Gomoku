@@ -20,7 +20,9 @@ import javax.swing.JTextField;
 
 import vodja.Vodja;
 import vodja.VrstaIgralca;
+import logika.Igra;
 import logika.Igralec;
+import logika.Stanje;
 
 
 @SuppressWarnings("serial")
@@ -28,7 +30,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	
 	private IgralnoPolje polje;
 
-	
 	//Statusna vrstica v spodnjem delu okna
 	private JLabel status;
 	
@@ -43,21 +44,20 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem cas;
 	private JMenuItem barvaOzadja;
 
-
+	// velikost polja
 	private int N;
 
-	/**
-	 * Ustvari novo glavno okno in prièni igrati igro.
-	 */
+	
 	public GlavnoOkno(int N) {
+		
 		
 		this.N = N;
 		this.setTitle("Gomoku");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new GridBagLayout());
 	
-		// menu
 		
+		// menu
 		
 		JMenuBar menu_bar = new JMenuBar();
 		this.setJMenuBar(menu_bar);
@@ -80,8 +80,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 		barvaOzadja = dodajMenuItem(lastnosti_graficnega_vmesnika, "barva ozadja");
 		
+		
 		// igralno polje
-		polje = new IgralnoPolje();
+		
+		polje = new IgralnoPolje(N);
 
 		GridBagConstraints polje_layout = new GridBagConstraints();
 		polje_layout.gridx = 0;
@@ -92,7 +94,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje_layout.fill = GridBagConstraints.BOTH;
 		getContentPane().add(polje, polje_layout);
 		
+		
 		// statusna vrstica za sporoèila
+		
 		status = new JLabel();
 		status.setFont(new Font(status.getFont().getName(),
 							    status.getFont().getStyle(),
@@ -107,6 +111,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 	}
 	
+	
 	public JMenu dodajMenu(JMenuBar menubar, String naslov) {
 		JMenu menu = new JMenu(naslov);
 		menubar.add(menu);
@@ -120,6 +125,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		return menuitem;
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == igraClovekRacunalnik) {
@@ -147,8 +153,13 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			Vodja.igramoNovoIgro(this.N);
 		} 
 		else if (e.getSource() == velikost) {
-			// TODO: moramo povsod spremeniti iz 15 v N
-			return;
+			String velikost = JOptionPane.showInputDialog(this, "Odzivni èas raèunalnika: ");
+			if (velikost != null && velikost.matches("\\d+") && (Vodja.igra == null || Vodja.igra.stanje() != Stanje.V_TEKU)) {
+				this.N = Integer.parseInt(velikost);
+				polje.N = this.N;
+				polje.repaint();
+				// TODO ne dela prav, èe spremeniš velikost, ko se enkrat igra že konèa
+			}
 		}
 		else if (e.getSource() == ime) {
 			JTextField imeBeli = new JTextField();
@@ -209,7 +220,5 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		polje.repaint();
 	}
 	
-
-
-
+	
 }
