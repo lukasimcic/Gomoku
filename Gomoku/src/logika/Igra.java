@@ -35,6 +35,18 @@ public class Igra {
 		naPotezi = Igralec.C;
 	} 
 	
+	public Igra(Igra igra) {
+		this.N = igra.N;
+		this.VRSTE = vrste(N);
+		this.plosca = new Polje[N][N];
+		for (int i = 0; i < N; i++) {
+			for (int j = 0; j < N; j++) {
+				this.plosca[i][j] = igra.plosca[i][j];
+			}
+		}
+		this.naPotezi = igra.naPotezi;
+	}
+
 	public Igralec getIgralecNaPotezi() {
 		return naPotezi;
 	}
@@ -42,7 +54,11 @@ public class Igra {
 	public Polje[][] getPlosca () {
 		return plosca;
 	}
-
+	
+	public int getN () {
+		return N;
+	}
+	
 	private List<Vrsta> vrste(int N) {
 		List<Vrsta> vrste = new LinkedList<Vrsta>();
 		int[][] smer = {{1,0}, {0,1}, {1,1}, {1,-1}};
@@ -102,7 +118,7 @@ public class Igra {
 	}
 	
 	public Vrsta zmagovalnaVrsta() {
-		for (Vrsta t : VRSTE) {
+		for (Vrsta t : getVRSTE()) {
 			Igralec lastnik = cigavaVrsta(t);
 			if (lastnik != null) return t;
 		}
@@ -150,5 +166,6 @@ public class Igra {
 		Koordinati p = poteze.remove(poteze.size() - 1);
 		plosca[p.getX()][p.getY()] = Polje.PRAZNO;
 	}
+
 	
 }

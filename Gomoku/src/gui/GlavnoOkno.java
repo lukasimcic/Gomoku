@@ -20,7 +20,6 @@ import javax.swing.JTextField;
 
 import vodja.Vodja;
 import vodja.VrstaIgralca;
-import logika.Igra;
 import logika.Igralec;
 import logika.Stanje;
 
