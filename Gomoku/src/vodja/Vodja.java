@@ -1,13 +1,12 @@
 package vodja;
 
-import java.util.Random;
 import java.util.Map;
-import java.util.List;
 
 import javax.swing.SwingWorker;
 import java.util.concurrent.TimeUnit;
 
 import gui.GlavnoOkno;
+import inteligenca.Inteligenca;
 import logika.Igra;
 import logika.Igralec;
 import splosno.Koordinati;
@@ -30,7 +29,6 @@ public class Vodja {
 		igramo ();
 	}
 	
-	// TODO: igra.naPotezi popravi
 	public static void igramo () {
 		okno.osveziGUI();
 		System.out.println(igra.stanje());
@@ -51,8 +49,6 @@ public class Vodja {
 			}
 		}
 	}
-	
-	private static Random random = new Random ();
 
 	// v igri raè-raè na vsaki potezi èaka 2s in popravi grafiko - plošèo s figurami šele ko se igra konèa.
 //	public static void igrajRacunalnikovoPotezo() {
@@ -64,16 +60,17 @@ public class Vodja {
 //		igramo ();
 //	}
 	
+	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(2);
+	
 	// Odigra raèunalnikovo potezo. Preden odigra poèaka 2s, nato odigra in posodobi grafiko-nariše potezo.
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
 			protected Koordinati doInBackground() {
-				try {TimeUnit.SECONDS.sleep(odzivniCasRacunalnika);} catch (Exception e) {};
-				List<Koordinati> moznePoteze = igra.moznePoteze();
-				int randomIndex = random.nextInt(moznePoteze.size());
-				return moznePoteze.get(randomIndex);
+				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+				return poteza;
 			}
 			@Override
 			protected void done () {

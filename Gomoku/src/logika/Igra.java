@@ -9,7 +9,6 @@ import java.util.List;
 import splosno.Koordinati;
 
 public class Igra {
-	
 	public int N; // velikost plosce je NxN
 	public static final int M = 5; // gledamo 5 zaporednih polj
 	
@@ -17,9 +16,11 @@ public class Igra {
 	
 	private final List<Vrsta> VRSTE; // mozne kombinacije 5 zapordnih polj
 	
-	public static Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
+	public Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
 	
 	public List<Koordinati> poteze = new ArrayList<>();
+	
+	public Algoritem algoritem = Algoritem.MINIMAX;
 	
 	public Igra(int N) {
 		this.N = N;
@@ -57,6 +58,10 @@ public class Igra {
 	
 	public int getN () {
 		return N;
+	}
+	
+	public List<Vrsta> getVRSTE () {
+		return VRSTE;
 	}
 	
 	private List<Vrsta> vrste(int N) {
@@ -118,7 +123,7 @@ public class Igra {
 	}
 	
 	public Vrsta zmagovalnaVrsta() {
-		for (Vrsta t : getVRSTE()) {
+		for (Vrsta t : VRSTE) {
 			Igralec lastnik = cigavaVrsta(t);
 			if (lastnik != null) return t;
 		}

@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JPanel;
 
 import vodja.Vodja;
-
+import logika.Igra;
 import logika.Igralec;
 import logika.Polje;
 import logika.Vrsta;
@@ -95,7 +95,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		if (Vodja.igra != null) {t = Vodja.igra.zmagovalnaVrsta();}
 		if (t != null) {
 			g2.setColor(new Color(255, 255, 196));
-			for (int k = 0; k < 5; k++) {
+			for (int k = 0; k < Igra.M; k++) {
 				int i = t.xList[k];
 				int j = t.yList[k];
 				g2.fillRect((int)(x_0 + w * i), (int)(y_0 + w * j), (int)w, (int)w);
