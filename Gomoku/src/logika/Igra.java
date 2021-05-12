@@ -20,12 +20,12 @@ public class Igra {
 	
 	public List<Koordinati> poteze = new ArrayList<>();
 	
-	public Algoritem algoritem = Algoritem.MINIMAX;
+	public static Algoritem algoritem = Algoritem.MINIMAX;
 	
 	public Igra(int N) {
 		this.N = N;
 		this.VRSTE = vrste(N);
-		
+		setAlgoritem(algoritem);
 		plosca = new Polje[N][N];
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -40,6 +40,7 @@ public class Igra {
 		this.N = igra.N;
 		this.VRSTE = vrste(N);
 		this.plosca = new Polje[N][N];
+		setAlgoritem(igra.getAlgoritem());
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				this.plosca[i][j] = igra.plosca[i][j];
@@ -62,6 +63,14 @@ public class Igra {
 	
 	public List<Vrsta> getVRSTE () {
 		return VRSTE;
+	}
+	
+	public static void setAlgoritem (Algoritem alg) {
+		Igra.algoritem = alg;
+	}
+	
+	public Algoritem getAlgoritem() {
+		return algoritem;
 	}
 	
 	private List<Vrsta> vrste(int N) {
