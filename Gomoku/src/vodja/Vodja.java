@@ -54,6 +54,7 @@ public class Vodja {
 	
 	// Odigra raèunalnikovo potezo. Preden odigra poèaka 2s, nato odigra in posodobi grafiko-nariše potezo.
 	public static void igrajRacunalnikovoPotezo() {
+		System.out.println("test");
 		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
@@ -66,7 +67,7 @@ public class Vodja {
 			@Override
 			protected void done () {
 				Koordinati poteza = null;
-				try {poteza = get();} catch (Exception e) {};
+				try {poteza = get();} catch (Exception e) {e.printStackTrace();};
 				// preveri èe uporabnik med izvajanjem ni spremenil igre, t. j. da ni v meniju izbral nove igre, saj potem ne želimo odigrati poteze na stari igri
 				if (igra == zacetnaIgra) {
 					igra.odigraj(poteza);

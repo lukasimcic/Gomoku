@@ -32,7 +32,7 @@ public class Igra {
 				plosca[i][j] = Polje.PRAZNO;
 			}
 		}
-		seznamMoznihPotez = zacetneMoznePoteze();
+		seznamMoznihPotez = trenutneMoznePoteze();
 		naPotezi = Igralec.C;
 	} 
 	
@@ -46,7 +46,7 @@ public class Igra {
 				this.plosca[i][j] = igra.plosca[i][j];
 			}
 		}
-		this.seznamMoznihPotez = igra.seznamMoznihPotez;
+		this.seznamMoznihPotez = trenutneMoznePoteze();
 		this.naPotezi = igra.naPotezi;
 	}
 
@@ -96,12 +96,10 @@ public class Igra {
 				}
 			}
 		}
-		for (Vrsta i : vrste) System.out.println(i);
-		System.out.println(vrste.size());
 		return vrste;
 	}
 
-	public List<Koordinati> zacetneMoznePoteze() {
+	public List<Koordinati> trenutneMoznePoteze() {
 		LinkedList<Koordinati> ps = new LinkedList<Koordinati>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
