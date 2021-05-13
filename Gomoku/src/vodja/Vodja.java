@@ -54,20 +54,18 @@ public class Vodja {
 	
 	// Odigra raèunalnikovo potezo. Preden odigra poèaka 2s, nato odigra in posodobi grafiko-nariše potezo.
 	public static void igrajRacunalnikovoPotezo() {
-		System.out.println("test");
 		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
 			protected Koordinati doInBackground() {
 				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
-				System.out.println(poteza);
-				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
+				try {TimeUnit.SECONDS.sleep(odzivniCasRacunalnika);} catch (Exception e) {};
 				return poteza;
 			}
 			@Override
 			protected void done () {
 				Koordinati poteza = null;
-				try {poteza = get();} catch (Exception e) {e.printStackTrace();};
+				try {poteza = get();} catch (Exception e) {};
 				// preveri èe uporabnik med izvajanjem ni spremenil igre, t. j. da ni v meniju izbral nove igre, saj potem ne želimo odigrati poteze na stari igri
 				if (igra == zacetnaIgra) {
 					igra.odigraj(poteza);

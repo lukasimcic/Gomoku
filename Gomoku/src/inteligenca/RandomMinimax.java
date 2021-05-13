@@ -26,7 +26,6 @@ public class RandomMinimax {
 	public static List<OcenjenaPoteza> najboljsePoteze(Igra igra, int globina) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
-		System.out.println(moznePoteze.size());
 		for (Koordinati p: moznePoteze) {
 			Igra kopijaIgre = new Igra(igra); 
 			kopijaIgre.odigraj(p); //poskusimo vsako potezo v novi kopiji igre
@@ -42,7 +41,6 @@ public class RandomMinimax {
 			}
 			najboljsePoteze.addIfBest(new OcenjenaPoteza(p, ocena));			
 		}
-		System.out.println(najboljsePoteze.list());
 		return najboljsePoteze.list();
 	}
 

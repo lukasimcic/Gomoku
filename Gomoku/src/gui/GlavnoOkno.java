@@ -175,11 +175,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 				new JLabel("Vnesi ime èrnega: "), imeCrni
 			};
 			int izbira = JOptionPane.showConfirmDialog(this, polja, "Input", JOptionPane.OK_CANCEL_OPTION);
-			// if (izbira == JOptionPane.OK_OPTION && imeBeli.getText().matches("\\w+") && imeCrni.getText().matches("\\w+")) {
-			// TODO: ime je lahko samo beseda in ne stevilka
 			if (izbira == JOptionPane.OK_OPTION) {
-				// igra.naPotezi.imeB = "jnkjas"
-				// TODO: implementacija imen
+				Igralec.imeCrni = imeCrni.getText();
+				Igralec.imeBeli = imeBeli.getText();
 				return;	
 			}
 		}
