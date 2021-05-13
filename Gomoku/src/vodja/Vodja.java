@@ -49,16 +49,6 @@ public class Vodja {
 			}
 		}
 	}
-
-	// v igri raè-raè na vsaki potezi èaka 2s in popravi grafiko - plošèo s figurami šele ko se igra konèa.
-//	public static void igrajRacunalnikovoPotezo() {
-//		List<Koordinati> moznePoteze = igra.poteze();
-//		try {TimeUnit.SECONDS.sleep(2);} catch (Exception e) {};
-//		int randomIndex = random.nextInt(moznePoteze.size());
-//		Koordinati poteza = moznePoteze.get(randomIndex);
-//		igra.odigraj(poteza);
-//		igramo ();
-//	}
 	
 	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(2);
 	
@@ -69,6 +59,7 @@ public class Vodja {
 			@Override
 			protected Koordinati doInBackground() {
 				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+				System.out.println(poteza);
 				try {TimeUnit.SECONDS.sleep(1);} catch (Exception e) {};
 				return poteza;
 			}

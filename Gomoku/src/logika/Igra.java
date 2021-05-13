@@ -18,7 +18,7 @@ public class Igra {
 	
 	public Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
 	
-	public List<Koordinati> poteze = new ArrayList<>();
+	public List<Koordinati> seznamMoznihPotez = new ArrayList<>();
 	
 	public static Algoritem algoritem = Algoritem.MINIMAX;
 	
@@ -32,7 +32,7 @@ public class Igra {
 				plosca[i][j] = Polje.PRAZNO;
 			}
 		}
-		
+		seznamMoznihPotez = zacetneMoznePoteze();
 		naPotezi = Igralec.C;
 	} 
 	
@@ -46,6 +46,7 @@ public class Igra {
 				this.plosca[i][j] = igra.plosca[i][j];
 			}
 		}
+		this.seznamMoznihPotez = igra.seznamMoznihPotez;
 		this.naPotezi = igra.naPotezi;
 	}
 
@@ -100,7 +101,7 @@ public class Igra {
 		return vrste;
 	}
 
-	public List<Koordinati> moznePoteze() {
+	public List<Koordinati> zacetneMoznePoteze() {
 		LinkedList<Koordinati> ps = new LinkedList<Koordinati>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
@@ -113,7 +114,7 @@ public class Igra {
 	}
 	
 	public boolean veljavnaPoteza(Koordinati p) {
-		return moznePoteze().contains(p);
+		return seznamMoznihPotez.contains(p);
 	}
 	
 	private Igralec cigavaVrsta(Vrsta t) {  // vrsta je 5 zaporednih polj v stolpcu, vrsti alpa diagonali
@@ -167,7 +168,7 @@ public class Igra {
 	public boolean odigraj(Koordinati p) {
 		if (plosca[p.getX()][p.getY()] == Polje.PRAZNO) {
 			plosca[p.getX()][p.getY()] = naPotezi.getPolje();
-			poteze.add(p);
+			seznamMoznihPotez.remove(p);
 			naPotezi = naPotezi.nasprotnik();
 			return true;
 		}
@@ -176,10 +177,10 @@ public class Igra {
 		}
 	}
 	
-	public void razveljaviZadnjoPotezo() {
-		Koordinati p = poteze.remove(poteze.size() - 1);
-		plosca[p.getX()][p.getY()] = Polje.PRAZNO;
-	}
+//	public void razveljaviZadnjoPotezo() {
+//		Koordinati p = seznam.remove(poteze.size() - 1);
+//		plosca[p.getX()][p.getY()] = Polje.PRAZNO;
+//	}
 
 	
 }

@@ -82,7 +82,7 @@ public class TekstovniVmesnik {
 	private static Random random = new Random ();
 	
 	public static Koordinati racunalnikovaPoteza(Igra igra) {
-		List<Koordinati> moznePoteze = igra.moznePoteze();
+		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
 		int randomIndex = random.nextInt(moznePoteze.size());
 		Koordinati poteza = moznePoteze.get(randomIndex);
 		igra.odigraj(poteza);

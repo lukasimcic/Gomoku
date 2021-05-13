@@ -24,7 +24,8 @@ public class RandomMinimax {
 	// vrne seznam vseh potez, ki imajo največjo vrednost z vidike trenutnega igralca na potezi
 	public static List<OcenjenaPoteza> najboljsePoteze(Igra igra, int globina) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
-		List<Koordinati> moznePoteze = igra.moznePoteze();
+		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
+		System.out.print(moznePoteze.size());
 		for (Koordinati p: moznePoteze) {
 			Igra kopijaIgre = new Igra(igra); 
 			kopijaIgre.odigraj(p); //poskusimo vsako potezo v novi kopiji igre
