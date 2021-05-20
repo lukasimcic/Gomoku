@@ -17,7 +17,7 @@ public class Inteligenca extends KdoIgra {
 	
 	public Koordinati izberiPotezo (Igra igra) {
 		if (igra.getAlgoritem() == Algoritem.MINIMAX) return RandomMinimax.izberiPotezo(igra, this.globina);
-		else return RandomMinimax.izberiPotezo(igra, this.globina); // TODO spremenit v alfabeta
+		else return AlfaBeta.izberiPotezo(igra, this.globina);
 	}
 
 }

@@ -11,18 +11,18 @@ public class OceniPozicijo {
 	
 	public static int oceniPozicijo(Igra igra, Igralec jaz) {
 		int ocena = 0;
-		for (Vrsta v : igra.getVRSTE()) {     // TODO VRSTE private, static ??
+		for (Vrsta v : igra.getVRSTE()) {
 			ocena = ocena + oceniVrsto(v, igra, jaz);
 		}
 		return ocena;	
 	}
 	
-	// TODO popravi oceniVrsto
+	// TODO popravi oceniVrsto : funkcija ki oceni dano petorko
 	public static int oceniVrsto (Vrsta v, Igra igra, Igralec jaz) {
 		Polje[][] plosca = igra.getPlosca();
 		int count_B = 0;
 		int count_C = 0;
-		for (int k = 0; k < Igra.M && (count_B == 0 || count_C == 0); k++) {  // TODO N spet static ??
+		for (int k = 0; k < Igra.M && (count_B == 0 || count_C == 0); k++) {
 			switch (plosca[v.xList[k]][v.yList[k]]) {
 			case B: count_B += 1; break;
 			case C: count_C += 1; break;

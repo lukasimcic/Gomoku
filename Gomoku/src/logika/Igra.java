@@ -14,7 +14,7 @@ public class Igra {
 	
 	private Polje[][] plosca; // Igralno polje
 	
-	private final List<Vrsta> VRSTE; // mozne kombinacije 5 zapordnih polj
+	private final List<Vrsta> VRSTE; // vse mozne kombinacije 5 zapordnih polj
 	
 	public Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
 	
