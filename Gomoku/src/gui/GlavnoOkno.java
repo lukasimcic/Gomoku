@@ -45,7 +45,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem cas;
 	private JMenuItem barvaOzadja;
 
-	// velikost polja
+	// velikost igralne plošèe (kvadratna N x N plošèa)
 	private int N;
 
 	
@@ -58,22 +58,22 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		this.setLayout(new GridBagLayout());
 	
 		
-		// menu
-		
+		// menu		
 		JMenuBar menu_bar = new JMenuBar();
 		this.setJMenuBar(menu_bar);
 		
-		JMenu vrsta_igre = dodajMenu(menu_bar, "vrsta igre");
 		JMenu velikost_igre = dodajMenu(menu_bar, "velikost igre");
+		JMenu vrsta_igre = dodajMenu(menu_bar, "vrsta igre");
 		JMenu lastnosti_igralcev = dodajMenu(menu_bar, "lastnosti igralcev");
 		JMenu lastnosti_graficnega_vmesnika = dodajMenu(menu_bar, "lastnosti grafiènega vmesnika");
+		
+		velikost = dodajMenuItem(velikost_igre, "izberi velikost");
 		
 		igraClovekRacunalnik = dodajMenuItem(vrsta_igre, "èlovek – raèunalnik");
 		igraRacunalnikClovek = dodajMenuItem(vrsta_igre, "raèunalnik – èlovek");
 		igraClovekClovek = dodajMenuItem(vrsta_igre, "èlovek – èlovek");
 		igraRacunalnikRacunalnik = dodajMenuItem(vrsta_igre, "raèunalnik – raèunalnik");
 		
-		velikost = dodajMenuItem(velikost_igre, "izberi velikost");
 		
 		ime = dodajMenuItem(lastnosti_igralcev, "imena igralcev");
 		algoritem = dodajMenuItem(lastnosti_igralcev, "algoritem");
@@ -82,7 +82,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		barvaOzadja = dodajMenuItem(lastnosti_graficnega_vmesnika, "barva ozadja");
 		
 		
-		// igralno polje
+		// postavitev igralnega polja
 		
 		polje = new IgralnoPolje(N);
 
@@ -108,7 +108,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		status_layout.anchor = GridBagConstraints.CENTER;
 		getContentPane().add(status, status_layout);
 		
-		status.setText("Izberite vrsto igre!");
+		status.setText("Izberite velikost in vrsto igre!");
 		
 	}
 	
@@ -126,7 +126,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		return menuitem;
 	}
 
-	
+	// ukazi, ki se sprožijo ob izbiri elementa v menu-baru
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == igraClovekRacunalnik) {
@@ -187,7 +187,6 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	                "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, algoritmi, algoritmi[0]);
 			if (x == 0) Igra.setAlgoritem(Algoritem.MINIMAX);
 			else if (x == 1) Igra.setAlgoritem(Algoritem.ALFABETA);
-			// TODO se ne spremeni prav
 		}
 		else if (e.getSource() == cas) {
 			String casRacunalnika = JOptionPane.showInputDialog(this, "Odzivni èas raèunalnika: ");

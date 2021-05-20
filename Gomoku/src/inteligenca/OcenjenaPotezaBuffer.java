@@ -17,11 +17,11 @@ public class OcenjenaPotezaBuffer {
 
 	public void add(OcenjenaPoteza ocenjenaPoteza) {
 		int i = 0;
-		for (OcenjenaPoteza op:getBuffer()) {
+		for (OcenjenaPoteza op : getBuffer()) {
 			if (ocenjenaPoteza.compareTo(op) != 1) i++;
 			else break; // izstopimo iz zanke	
 		}
-		if (i < velikost) getBuffer().add(i,ocenjenaPoteza);
+		if (i < velikost) getBuffer().add(i, ocenjenaPoteza);
 		if (getBuffer().size() > velikost) getBuffer().removeLast();
 	}
 	

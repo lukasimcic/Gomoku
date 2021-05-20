@@ -23,12 +23,13 @@ public class Vodja {
 	
 	public static int odzivniCasRacunalnika = 2;
 	
-	// ustvari novo igro - objekt razreda Igra in jo požene z metodo igramo()
+	// ustvari novo igro in jo zažene
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
 		igramo ();
 	}
 	
+	// potek igre
 	public static void igramo () {
 		okno.osveziGUI();
 		System.out.println(igra.stanje());
@@ -50,9 +51,10 @@ public class Vodja {
 		}
 	}
 	
+	// naèin igranja raèunalnika
 	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(3);
 	
-	// Odigra raèunalnikovo potezo. Preden odigra poèaka 2s, nato odigra in posodobi grafiko-nariše potezo.
+	// Odigra raèunalnikovo potezo in posodobi grafiko-nariše potezo. Preden odigra poèaka 2s oz. po izbiri.
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
@@ -66,7 +68,10 @@ public class Vodja {
 			protected void done () {
 				Koordinati poteza = null;
 				try {poteza = get();} catch (Exception e) {};
-				// preveri èe uporabnik med izvajanjem ni spremenil igre, t. j. da ni v meniju izbral nove igre, saj potem ne želimo odigrati poteze na stari igri
+				/*
+				 *  Preveri èe uporabnik med izvajanjem ni spremenil igre, t. j. da ni v meniju izbral nove igre,
+				 *  saj ne želimo odigrati poteze na stari igri.
+				 */
 				if (igra == zacetnaIgra) {
 					igra.odigraj(poteza);
 					igramo ();
@@ -75,7 +80,8 @@ public class Vodja {
 		};
 		worker.execute();
 	}
-		
+	
+	// odigra èlovekovo potezo, èe je možna in nadaljuje z igro
 	public static void igrajClovekovoPotezo(Koordinati poteza) {
 		if (igra.odigraj(poteza)) clovekNaVrsti = false;
 		igramo ();

@@ -9,19 +9,20 @@ import java.util.List;
 import splosno.Koordinati;
 
 public class Igra {
-	public int N; // velikost plosce je NxN
-	public static final int M = 5; // gledamo 5 zaporednih polj
+	public int N; // velikost igralne plošèe je NxN
+	public static final int M = 5; // število zaporednih polj iste barve, ki zadostuje za zmago
 	
-	private Polje[][] plosca; // Igralno polje
+	private Polje[][] plosca; // Igralna plošèa
 	
-	private final List<Vrsta> VRSTE; // vse mozne kombinacije 5 zapordnih polj
+	private final List<Vrsta> VRSTE; // vse možne kombinacije 5 zaporednih polj
 	
-	public Igralec naPotezi; // Igralec, ki je trenutno na potezi. Vrednost je poljubna, èe je igre konec (se pravi, lahko je napaèna).
+	public Igralec naPotezi; // Igralec, ki je trenutno na potezi.
 	
-	public List<Koordinati> seznamMoznihPotez = new ArrayList<>();
+	public List<Koordinati> seznamMoznihPotez = new ArrayList<>(); // seznam polj na igralni plošèi, ki so še prazna
 	
-	public static Algoritem algoritem = Algoritem.MINIMAX;
+	public static Algoritem algoritem = Algoritem.MINIMAX; // raèunalnik priène igro z minimax algoritmom
 	
+	// vse potrebno za prièetek nove igre
 	public Igra(int N) {
 		this.N = N;
 		this.VRSTE = vrste(N);
@@ -36,6 +37,7 @@ public class Igra {
 		naPotezi = Igralec.C;
 	} 
 	
+	// identièna kopija igre
 	public Igra(Igra igra) {
 		this.N = igra.N;
 		this.VRSTE = vrste(N);
@@ -49,7 +51,9 @@ public class Igra {
 		this.seznamMoznihPotez = trenutneMoznePoteze();
 		this.naPotezi = igra.naPotezi;
 	}
-
+	
+	//getter in setter za veè atributov
+	
 	public Igralec getIgralecNaPotezi() {
 		return naPotezi;
 	}
@@ -74,6 +78,7 @@ public class Igra {
 		return algoritem;
 	}
 	
+	// ustvari seznam vseh možnih peteric - vrstic dolžine 5
 	private List<Vrsta> vrste(int N) {
 		List<Vrsta> vrste = new LinkedList<Vrsta>();
 		int[][] smer = {{1,0}, {0,1}, {1,1}, {1,-1}};
@@ -82,7 +87,7 @@ public class Igra {
 				for (int[] s : smer) {
 					int dx = s[0];
 					int dy = s[1];
-					// èe je skrajno polje terice še na plošèi, jo dodamo med terice
+					// èe je skrajno polje peterice še na plošèi, jo dodamo med peterice
 					if ((0 <= x + (M-1) * dx ) && (x + (M-1) * dx < N) && 
 						(0 <= y + (M-1) * dy) && (y + (M-1) * dy < N)) {
 						int[] vrsta_x = new int[M];
@@ -98,24 +103,28 @@ public class Igra {
 		}
 		return vrste;
 	}
-
+	
+	// vsa prazna polja na igralni plošèi
 	public List<Koordinati> trenutneMoznePoteze() {
-		LinkedList<Koordinati> ps = new LinkedList<Koordinati>();
+		LinkedList<Koordinati> trenutnoMozne = new LinkedList<Koordinati>();
 		for (int i = 0; i < N; i++) {
 			for (int j = 0; j < N; j++) {
 				if (plosca[i][j] == Polje.PRAZNO) {
-					ps.add(new Koordinati(i, j));
+					trenutnoMozne.add(new Koordinati(i, j));
 				}
 			}
 		}
-		return ps;
+		return trenutnoMozne;
 	}
 	
 	public boolean veljavnaPoteza(Koordinati p) {
 		return seznamMoznihPotez.contains(p);
 	}
 	
-	private Igralec cigavaVrsta(Vrsta t) {  // vrsta je 5 zaporednih polj v stolpcu, vrsti alpa diagonali
+	/* lastnik zmagovalne vrste, èe je le ta zmagovalna
+	 * Vrsta je v tem primeru peterica polj iz treh možnih smeri: vodoravno, navpièno ali diagonalno.
+	 */
+	private Igralec cigavaVrsta(Vrsta t) {  
 		int count_B = 0;
 		int count_C = 0;
 		for (int k = 0; k < M && (count_B == 0 || count_C == 0); k++) {
@@ -130,6 +139,7 @@ public class Igra {
 		else { return null; }
 	}
 	
+	// doloèi zmagovalno vrsto
 	public Vrsta zmagovalnaVrsta() {
 		for (Vrsta t : VRSTE) {
 			Igralec lastnik = cigavaVrsta(t);
@@ -138,6 +148,7 @@ public class Igra {
 		return null;
 	}
 	
+	// trenutno stanje v igri
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
 		Vrsta t = zmagovalnaVrsta();
@@ -149,13 +160,11 @@ public class Igra {
 			}
 		}
 		// Ali imamo kakšno prazno polje?
-		// Èe ga imamo, igre ni konec in je nekdo na potezi
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < N; j++) {
-				if (plosca[i][j] == Polje.PRAZNO) return Stanje.V_TEKU;
-			}
+		// Èe ga imamo, igre ni konec in je nekdo na potezi.
+		if (seznamMoznihPotez.size() != 0) {
+			return Stanje.V_TEKU;
 		}
-		// Polje je polno, rezultat je neodloèen
+		// Igralna plošèa je polna, rezultat je neodloèen.
 		return Stanje.NEODLOCENO;
 	}
 	
@@ -163,6 +172,7 @@ public class Igra {
 		return stanje() != Stanje.V_TEKU;
 	}
 	
+	// odigra potezo, èe je izbrano polje prazno in jo izbriše iz seznama možnih potez
 	public boolean odigraj(Koordinati p) {
 		if (plosca[p.getX()][p.getY()] == Polje.PRAZNO) {
 			plosca[p.getX()][p.getY()] = naPotezi.getPolje();
@@ -174,11 +184,6 @@ public class Igra {
 			return false;
 		}
 	}
-	
-//	public void razveljaviZadnjoPotezo() {
-//		Koordinati p = seznam.remove(poteze.size() - 1);
-//		plosca[p.getX()][p.getY()] = Polje.PRAZNO;
-//	}
 
 	
 }

@@ -21,7 +21,7 @@ import splosno.Koordinati;
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
 	
-	// velikost polja
+	// velikost igralne plošèe
 	public int N;
 	
 	public IgralnoPolje(int N) {
@@ -83,14 +83,14 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 
 		double w = squareWidth();
 		
-		//kvadrat za pobarvati igralno polje
+		// kvadrat za barvanje igralno plošèo
 		g2.setColor(barvaOzadja);
 		double x_0 = startingPoint()[0];
 		double y_0 = startingPoint()[1];
 		g2.fillRect((int) x_0, (int) y_0, N * (int)w, N * (int)w );
 		
 		
-		// èe imamo zmagovalno vrstico, njeno ozadje pobarvamo
+		// barvanje zmagovalne petorke, èe ta obstaja
 		Vrsta t = null;
 		if (Vodja.igra != null) {t = Vodja.igra.zmagovalnaVrsta();}
 		if (t != null) {
@@ -102,9 +102,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			}
 		}
 		
-		
-		// ÈRTE
-		// èrte zaènemo risati na sredini polja (hopefully)
+		// ÈRTE centrirane glede na okno
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		
@@ -119,7 +117,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 					    (int)(y_0 + (i * w)));
 		}
 		
-		// Na vsakem kvadratku v polju nariše figure, èe kvadratek ni prazen 
+		// Na vsakem kvadratku na igralni plošèi se nariše figura, èe kvadratek ni prazen. 
 		Polje[][] plosca;;
 		if (Vodja.igra != null) {
 			plosca = Vodja.igra.getPlosca();
@@ -136,6 +134,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		
 	}
 	
+	// odèita mesto èlovekove poteze in jo odigra 
 	@Override
 	public void mouseClicked(MouseEvent e) {		
 		if (Vodja.clovekNaVrsti) {
