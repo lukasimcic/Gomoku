@@ -161,7 +161,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 					polje.N = this.N;
 					polje.repaint();
 				}
-				else if (Vodja.igra.stanje() != Stanje.V_TEKU) {
+				else {
 					this.N = Integer.parseInt(velikost);
 					polje.N = this.N;
 				}

@@ -50,7 +50,7 @@ public class Vodja {
 		}
 	}
 	
-	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(2);
+	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(3);
 	
 	// Odigra raèunalnikovo potezo. Preden odigra poèaka 2s, nato odigra in posodobi grafiko-nariše potezo.
 	public static void igrajRacunalnikovoPotezo() {
