@@ -31,29 +31,26 @@ public class Inteligenca extends KdoIgra {
 		if (igra.getIgralecNaPotezi() == jaz) {ocena = PORAZ;} else {ocena = ZMAGA;}
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
 		Koordinati kandidat = moznePoteze.get(0); // Možno je, da se ne spremeni vrednost kanditata. Zato ne more biti null.
-		for (Koordinati p: moznePoteze) {
-			Igra kopijaIgre = new Igra(igra);
-			kopijaIgre.odigraj (p);
+		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra);
+		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocenap;
-			switch (kopijaIgre.stanje()) {
-			case ZMAGA_B: ocenap = (jaz == Igralec.B ? ZMAGA : PORAZ); break;
-			case ZMAGA_C: ocenap = (jaz == Igralec.C ? ZMAGA : PORAZ); break;
-			case NEODLOCENO: ocenap = NEODLOC; break;
-			default:
-				// Nekdo je na potezi
-				if (globina == 1) ocenap = OceniPozicijo.oceniPozicijo(kopijaIgre, jaz);
-				else ocenap = alphabetaPoteze (kopijaIgre, globina-1, alpha, beta, jaz).ocena;
+			if (globina==1) ocenap = op.ocena;
+			else {
+				Igra kopijaIgre = new Igra(igra); 
+				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
+				ocenap = //negacija ocene z vidike drugega igralca
+						-alphabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz).ocena;
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
 					ocena = ocenap;
-					kandidat = p;
+					kandidat = op.poteza;
 					alpha = Math.max(alpha,ocena);
 				}
 			} else { // igra.naPotezi() != jaz, torej minimiziramo oceno
 				if (ocenap < ocena) { // mora biti < namesto <=
 					ocena = ocenap;
-					kandidat = p;
+					kandidat = op.poteza;
 					beta = Math.min(beta, ocena);					
 				}	
 			}
@@ -74,10 +71,8 @@ public class Inteligenca extends KdoIgra {
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
-				List<OcenjenaPoteza> test = minimaxPoteze(kopijaIgre, globina-1);
-				System.out.println(test.size());
 				ocena = //negacija ocene z vidike drugega igralca
-						-test.get(0).ocena;  // TODO ko so samo se 3 mozne poteze ga nekej zmoti
+						-minimaxPoteze(kopijaIgre, globina-1).get(0).ocena;
 			}
 			najboljsePoteze.addIfBest(new OcenjenaPoteza(op.poteza, ocena));			
 		}
