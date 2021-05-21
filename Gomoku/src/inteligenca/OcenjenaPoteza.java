@@ -2,6 +2,7 @@ package inteligenca;
 
 import splosno.Koordinati;
 
+// razred potez skupaj z njihovo oceno
 public class OcenjenaPoteza {
 	
 	Koordinati poteza;

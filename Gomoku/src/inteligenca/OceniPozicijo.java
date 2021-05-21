@@ -7,8 +7,7 @@ import logika.Vrsta;
 
 public class OceniPozicijo {
 	
-	// Metoda oceniPozicijo za igro TicTacToe
-	
+	// statièna ocena trenutne pozicije v igri	
 	public static int oceniPozicijo(Igra igra, Igralec jaz) {
 		int ocena = 0;
 		for (Vrsta v : igra.getVRSTE()) {
@@ -17,7 +16,7 @@ public class OceniPozicijo {
 		return ocena;	
 	}
 	
-	// TODO popravi oceniVrsto : funkcija ki oceni dano petorko
+	// oceni dano peterico iz perspektive podanega igralca
 	public static int oceniVrsto (Vrsta v, Igra igra, Igralec jaz) {
 		Polje[][] plosca = igra.getPlosca();
 		int count_B = 0;

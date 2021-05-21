@@ -15,8 +15,8 @@ public class Inteligenca extends KdoIgra {
 	
 	private static final Random RANDOM = new Random();
 	
-	private static final int ZMAGA = 10000; // vrednost zmage
-	private static final int ZGUBA = -ZMAGA;  // vrednost izgube
+	private static final int ZMAGA = 1000000; // vrednost zmage
+	private static final int PORAZ = -ZMAGA;  // vrednost izgube
 	private static final int NEODLOC = 0;  // vrednost neodloèene igre	
 	
 	public Inteligenca (int globina) {
@@ -26,9 +26,9 @@ public class Inteligenca extends KdoIgra {
 	
 	public static OcenjenaPoteza alphabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
 		int ocena;
-		// Èe sem raèunalnik, maksimiramo oceno z zaèetno oceno ZGUBA
+		// Èe sem raèunalnik, maksimiramo oceno z zaèetno oceno PORAZ
 		// Èe sem pa èlovek, minimiziramo oceno z zaèetno oceno ZMAGA
-		if (igra.getIgralecNaPotezi() == jaz) {ocena = ZGUBA;} else {ocena = ZMAGA;}
+		if (igra.getIgralecNaPotezi() == jaz) {ocena = PORAZ;} else {ocena = ZMAGA;}
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
 		Koordinati kandidat = moznePoteze.get(0); // Možno je, da se ne spremeni vrednost kanditata. Zato ne more biti null.
 		for (Koordinati p: moznePoteze) {
@@ -36,8 +36,8 @@ public class Inteligenca extends KdoIgra {
 			kopijaIgre.odigraj (p);
 			int ocenap;
 			switch (kopijaIgre.stanje()) {
-			case ZMAGA_B: ocenap = (jaz == Igralec.B ? ZMAGA : ZGUBA); break;
-			case ZMAGA_C: ocenap = (jaz == Igralec.C ? ZMAGA : ZGUBA); break;
+			case ZMAGA_B: ocenap = (jaz == Igralec.B ? ZMAGA : PORAZ); break;
+			case ZMAGA_C: ocenap = (jaz == Igralec.C ? ZMAGA : PORAZ); break;
 			case NEODLOCENO: ocenap = NEODLOC; break;
 			default:
 				// Nekdo je na potezi
@@ -76,9 +76,9 @@ public class Inteligenca extends KdoIgra {
 			case ZMAGA_B: ocena = ZMAGA; break; // p je zmagovalna poteza
 			case NEODLOCENO: ocena = NEODLOC; break;
 			default: //nekdo je na potezi
-				if (globina==1) ocena = OceniPozicijo.oceniPozicijo(kopijaIgre,igra.getIgralecNaPotezi());
-				else ocena = //negacija ocene z vidike dgrugega igralca
-						-najboljsePoteze(kopijaIgre,globina-1).get(0).ocena;  
+				if (globina==1) ocena = OceniPozicijo.oceniPozicijo(kopijaIgre, igra.getIgralecNaPotezi());
+				else ocena = //negacija ocene z vidike drugega igralca
+						-najboljsePoteze(kopijaIgre, globina-1).get(0).ocena;  
 			}
 			najboljsePoteze.addIfBest(new OcenjenaPoteza(p, ocena));			
 		}
@@ -87,12 +87,10 @@ public class Inteligenca extends KdoIgra {
 	
 	public Koordinati izberiPotezo (Igra igra) {
 		if (igra.getAlgoritem() == Algoritem.MINIMAX) {
-			System.out.println("izbiram potezo");
 			List<OcenjenaPoteza> ocenjenePoteze = najboljsePoteze(igra, globina);
-			System.out.println(ocenjenePoteze.size() + " potez z vrednostjo " + ocenjenePoteze.get(0).ocena);
 			int i = RANDOM.nextInt(ocenjenePoteze.size());	
 			return ocenjenePoteze.get(i).poteza;
 		}
-		else return alphabetaPoteze(igra, globina, ZGUBA, ZMAGA, igra.getIgralecNaPotezi()).poteza;
+		else return alphabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi()).poteza;
 	}
 }
