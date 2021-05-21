@@ -64,10 +64,33 @@ public class Inteligenca extends KdoIgra {
 	}
 	
 	// vrne seznam vseh potez, ki imajo najveèjo vrednost z vidike trenutnega igralca na potezi
-	public static List<OcenjenaPoteza> najboljsePoteze(Igra igra, int globina) {
+	public static List<OcenjenaPoteza> minimaxPoteze(Igra igra, int globina) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
-		for (Koordinati p: moznePoteze) {
+		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra);
+		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
+			int ocena;
+			if (globina==1) ocena = op.ocena;
+			else {
+				Igra kopijaIgre = new Igra(igra); 
+				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
+				List<OcenjenaPoteza> test = minimaxPoteze(kopijaIgre, globina-1);
+				System.out.println(test.size());
+				ocena = //negacija ocene z vidike drugega igralca
+						-test.get(0).ocena;  // TODO ko so samo se 3 mozne poteze ga nekej zmoti
+			}
+			najboljsePoteze.addIfBest(new OcenjenaPoteza(op.poteza, ocena));			
+		}
+		return najboljsePoteze.list();
+	}
+	
+	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra) {
+		int velikost;
+		if (moznePoteze.size() < 4) velikost = moznePoteze.size();
+		else velikost = (int) moznePoteze.size()/3;
+		OcenjenaPotezaBuffer buffer = new OcenjenaPotezaBuffer(velikost);
+		System.out.print(Math.max((int) moznePoteze.size()/3, 3));
+		for (Koordinati p : moznePoteze) {
 			Igra kopijaIgre = new Igra(igra); 
 			kopijaIgre.odigraj(p); //poskusimo vsako potezo v novi kopiji igre
 			int ocena;
@@ -76,18 +99,17 @@ public class Inteligenca extends KdoIgra {
 			case ZMAGA_B: ocena = ZMAGA; break; // p je zmagovalna poteza
 			case NEODLOCENO: ocena = NEODLOC; break;
 			default: //nekdo je na potezi
-				if (globina==1) ocena = OceniPozicijo.oceniPozicijo(kopijaIgre, igra.getIgralecNaPotezi());
-				else ocena = //negacija ocene z vidike drugega igralca
-						-najboljsePoteze(kopijaIgre, globina-1).get(0).ocena;  
+			ocena = OceniPozicijo.oceniPozicijo(kopijaIgre, igra.getIgralecNaPotezi());
+			OcenjenaPoteza op = new OcenjenaPoteza(p, ocena);
+			buffer.add(op);
 			}
-			najboljsePoteze.addIfBest(new OcenjenaPoteza(p, ocena));			
 		}
-		return najboljsePoteze.list();
+		return buffer.list(); 
 	}
 	
 	public Koordinati izberiPotezo (Igra igra) {
 		if (igra.getAlgoritem() == Algoritem.MINIMAX) {
-			List<OcenjenaPoteza> ocenjenePoteze = najboljsePoteze(igra, globina);
+			List<OcenjenaPoteza> ocenjenePoteze = minimaxPoteze(igra, globina);
 			int i = RANDOM.nextInt(ocenjenePoteze.size());	
 			return ocenjenePoteze.get(i).poteza;
 		}

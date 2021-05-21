@@ -67,7 +67,7 @@ public class Vodja {
 			@Override
 			protected void done () {
 				Koordinati poteza = null;
-				try {poteza = get();} catch (Exception e) {};
+				try {poteza = get();} catch (Exception e) {e.printStackTrace();};
 				/*
 				 *  Preveri èe uporabnik med izvajanjem ni spremenil igre, t. j. da ni v meniju izbral nove igre,
 				 *  saj ne želimo odigrati poteze na stari igri.
