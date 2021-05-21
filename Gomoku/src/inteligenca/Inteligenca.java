@@ -85,11 +85,11 @@ public class Inteligenca extends KdoIgra {
 	}
 	
 	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra) {
-		int velikost;
-		if (moznePoteze.size() < 4) velikost = moznePoteze.size();
-		else velikost = (int) moznePoteze.size()/3;
-		OcenjenaPotezaBuffer buffer = new OcenjenaPotezaBuffer(velikost);
-		System.out.print(Math.max((int) moznePoteze.size()/3, 3));
+		int steviloMoznihPotez = moznePoteze.size();
+		int velikost = (int) steviloMoznihPotez / 3 + 1;
+		OcenjenaPotezaBuffer buffer;
+		if (steviloMoznihPotez < 3) buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
+		else buffer = new OcenjenaPotezaBuffer(velikost);
 		for (Koordinati p : moznePoteze) {
 			Igra kopijaIgre = new Igra(igra); 
 			kopijaIgre.odigraj(p); //poskusimo vsako potezo v novi kopiji igre
@@ -100,10 +100,11 @@ public class Inteligenca extends KdoIgra {
 			case NEODLOCENO: ocena = NEODLOC; break;
 			default: //nekdo je na potezi
 			ocena = OceniPozicijo.oceniPozicijo(kopijaIgre, igra.getIgralecNaPotezi());
+			}
 			OcenjenaPoteza op = new OcenjenaPoteza(p, ocena);
 			buffer.add(op);
-			}
 		}
+		System.out.println(buffer);
 		return buffer.list(); 
 	}
 	

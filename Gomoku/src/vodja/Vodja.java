@@ -21,7 +21,9 @@ public class Vodja {
 	
 	public static boolean clovekNaVrsti = false;
 	
-	public static int odzivniCasRacunalnika = 2;
+	public static int odzivniCasRacunalnika = 1;
+	
+	private static int globina = 1;
 	
 	// ustvari novo igro in jo zažene
 	public static void igramoNovoIgro (int N) {
@@ -52,7 +54,7 @@ public class Vodja {
 	}
 	
 	// naèin igranja raèunalnika
-	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(2);
+	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(globina);
 	
 	// Odigra raèunalnikovo potezo in posodobi grafiko-nariše potezo. Preden odigra poèaka 2s oz. po izbiri.
 	public static void igrajRacunalnikovoPotezo() {

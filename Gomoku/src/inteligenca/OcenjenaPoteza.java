@@ -19,4 +19,9 @@ public class OcenjenaPoteza {
 		else return 0;
 	}
 
+	@Override
+	public String toString() {
+		return "koordinati " + poteza + " z oceno " + ocena;
+	}
+	
 }
