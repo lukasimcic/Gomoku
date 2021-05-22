@@ -1,7 +1,6 @@
 package inteligenca;
 
 import java.util.List;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class OcenjenaPotezaBuffer {
@@ -34,16 +33,6 @@ public class OcenjenaPotezaBuffer {
 
 	public LinkedList<OcenjenaPoteza> getBuffer() {
 		return buffer;
-	}
-
-	@Override
-	public String toString() {
-		String s = "[";
-		Iterator x = getBuffer().descendingIterator();
-        while (x.hasNext()) {
-			s = s + x.next() + ", ";
-		}
-		return s + "]";
 	}
 	
 }

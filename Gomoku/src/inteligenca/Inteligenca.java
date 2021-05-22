@@ -24,14 +24,14 @@ public class Inteligenca extends KdoIgra {
 		this.globina = globina;
 	}	
 	
-	public static OcenjenaPoteza alphabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
+	public static OcenjenaPoteza alfabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
 		int ocena;
 		// Èe sem raèunalnik, maksimiramo oceno z zaèetno oceno PORAZ
 		// Èe sem pa èlovek, minimiziramo oceno z zaèetno oceno ZMAGA
 		if (igra.getIgralecNaPotezi() == jaz) {ocena = PORAZ;} else {ocena = ZMAGA;}
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
 		Koordinati kandidat = moznePoteze.get(0); // Možno je, da se ne spremeni vrednost kanditata. Zato ne more biti null.
-		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra);
+		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocenap;
 			if (globina==1) ocenap = op.ocena;
@@ -39,7 +39,7 @@ public class Inteligenca extends KdoIgra {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocenap = //negacija ocene z vidike drugega igralca
-						-alphabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz).ocena;
+						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz).ocena;
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
@@ -64,7 +64,7 @@ public class Inteligenca extends KdoIgra {
 	public static List<OcenjenaPoteza> minimaxPoteze(Igra igra, int globina) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
-		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra);
+		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocena;
 			if (globina==1) ocena = op.ocena;
@@ -99,7 +99,6 @@ public class Inteligenca extends KdoIgra {
 			OcenjenaPoteza op = new OcenjenaPoteza(p, ocena);
 			buffer.add(op);
 		}
-		System.out.println(buffer);
 		return buffer.list(); 
 	}
 	
@@ -109,6 +108,6 @@ public class Inteligenca extends KdoIgra {
 			int i = RANDOM.nextInt(ocenjenePoteze.size());	
 			return ocenjenePoteze.get(i).poteza;
 		}
-		else return alphabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi()).poteza;
+		else return alfabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi()).poteza;
 	}
 }
