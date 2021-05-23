@@ -5,6 +5,7 @@ import java.util.Random;
 
 import logika.Igra;
 import logika.Igralec;
+import logika.Vrsta;
 import splosno.Koordinati;
 import logika.Algoritem;
 import splosno.KdoIgra;
@@ -94,12 +95,20 @@ public class Inteligenca extends KdoIgra {
 			case ZMAGA_B: ocena = ZMAGA; break; // p je zmagovalna poteza
 			case NEODLOCENO: ocena = NEODLOC; break;
 			default: //nekdo je na potezi
-			ocena = OceniPozicijo.oceniPozicijo(kopijaIgre, igra.getIgralecNaPotezi());
+			ocena = oceniPozicijo(kopijaIgre);
 			}
 			OcenjenaPoteza op = new OcenjenaPoteza(p, ocena);
 			buffer.add(op);
 		}
 		return buffer.list(); 
+	}
+	
+	public static int oceniPozicijo(Igra igra) {
+		int ocena = 0;
+		for (Vrsta v : igra.getVRSTE()) {
+			ocena = ocena + v.ocenaVrste(igra);
+		}
+		return ocena;	
 	}
 	
 	public Koordinati izberiPotezo (Igra igra) {
