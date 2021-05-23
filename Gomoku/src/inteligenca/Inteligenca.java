@@ -18,17 +18,17 @@ public class Inteligenca extends KdoIgra {
 	
 	private static final int ZMAGA = 1000000; // vrednost zmage
 	private static final int PORAZ = -ZMAGA;  // vrednost izgube
-	private static final int NEODLOC = 0;  // vrednost neodloèene igre	
+	private static final int NEODLOC = 0;  // vrednost neodlocene igre	
 	
 	public Inteligenca (int globina) {
-		super("raèunalnik igra z globino " + globina);
+		super("racunalnik igra z globino " + globina);
 		this.globina = globina;
 	}	
 	
 	public static OcenjenaPoteza alfabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
 		int ocena;
-		// Èe sem raèunalnik, maksimiramo oceno z zaèetno oceno PORAZ
-		// Èe sem pa èlovek, minimiziramo oceno z zaèetno oceno ZMAGA
+		// ce sem racunalnik, maksimiramo oceno z zacetno oceno PORAZ
+		// ce sem pa clovek, minimiziramo oceno z zacetno oceno ZMAGA
 		if (igra.getIgralecNaPotezi() == jaz) {ocena = PORAZ;} else {ocena = ZMAGA;}
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
 		Koordinati kandidat = moznePoteze.get(0); // Možno je, da se ne spremeni vrednost kanditata. Zato ne more biti null.
@@ -61,7 +61,7 @@ public class Inteligenca extends KdoIgra {
 		return new OcenjenaPoteza (kandidat, ocena);
 	}
 	
-	// vrne seznam vseh potez, ki imajo najveèjo vrednost z vidike trenutnega igralca na potezi
+	// vrne seznam vseh potez, ki imajo najvecjo vrednost z vidike trenutnega igralca na potezi
 	public static List<OcenjenaPoteza> minimaxPoteze(Igra igra, int globina) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;

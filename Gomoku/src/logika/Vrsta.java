@@ -52,7 +52,7 @@ public class Vrsta {
 			}
 		}
 		if (count_B > 0 && count_C > 0) { return 0; }
-		else if (igra.getIgralecNaPotezi() == Igralec.B) { return count_B - count_C; }
+		else if (igra.getIgralecNaPotezi() == Igralec.C) { return count_B - count_C; }
 		else { return count_C - count_B; }
 	}
 	

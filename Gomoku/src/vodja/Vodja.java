@@ -23,7 +23,7 @@ public class Vodja {
 	
 	public static int odzivniCasRacunalnika = 1;
 	
-	private static int globina = 3;
+	private static int globina = 1;
 	
 	// ustvari novo igro in jo zažene
 	public static void igramoNovoIgro (int N) {
