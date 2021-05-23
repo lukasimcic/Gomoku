@@ -51,7 +51,7 @@ public class Vrsta {
 			case PRAZNO: break;
 			}
 		}
-		if (count_B > 0 && count_C > 0) { return 0; }
+		if (count_B > 0 && count_C > 0) return Igra.M + 1;  // ta vrsta se bo zbrisala iz slovarja vrst
 		else if (igra.getIgralecNaPotezi() == Igralec.C) { return count_B - count_C; }
 		else { return count_C - count_B; }
 	}

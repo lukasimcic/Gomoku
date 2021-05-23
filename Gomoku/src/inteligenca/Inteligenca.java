@@ -5,7 +5,6 @@ import java.util.Random;
 
 import logika.Igra;
 import logika.Igralec;
-import logika.Vrsta;
 import splosno.Koordinati;
 import logika.Algoritem;
 import splosno.KdoIgra;
@@ -68,7 +67,7 @@ public class Inteligenca extends KdoIgra {
 		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocena;
-			if (globina==1) ocena = op.ocena;
+			if (globina == 1 || moznePoteze.size() == 1) ocena = op.ocena;
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
@@ -105,8 +104,8 @@ public class Inteligenca extends KdoIgra {
 	
 	public static int oceniPozicijo(Igra igra) {
 		int ocena = 0;
-		for (Vrsta v : igra.getVRSTE()) {
-			ocena = ocena + v.ocenaVrste(igra);
+		for (int ocenaVrste : igra.getVrste().values()) {
+			ocena = ocena + ocenaVrste;
 		}
 		return ocena;	
 	}

@@ -7,11 +7,14 @@ import java.util.concurrent.TimeUnit;
 
 import gui.GlavnoOkno;
 import inteligenca.Inteligenca;
+import logika.Algoritem;
 import logika.Igra;
 import logika.Igralec;
 import splosno.Koordinati;
 
 public class Vodja {	
+	
+	private static long previousTime; // meri cas potez
 	
 	public static Map<Igralec,VrstaIgralca> vrstaIgralca;
 	
@@ -23,24 +26,34 @@ public class Vodja {
 	
 	public static int odzivniCasRacunalnika = 1;
 	
-	private static int globina = 1;
+	private static int globina = 2;
 	
 	// ustvari novo igro in jo zažene
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
+		if (Igra.algoritem == Algoritem.MINIMAX) System.out.println("igramo z minimaxom");
+		else System.out.println("igramo z alfa beto");
+		previousTime = System.currentTimeMillis();
 		igramo ();
 	}
 	
 	// potek igre
 	public static void igramo () {
+		
+		// printa koliko casa rabi za eno potezo
+		long currentTime = System.currentTimeMillis();
+		double elapsedTime = (currentTime - previousTime) / 1000.0;
+		System.out.println("Time in seconds : " + elapsedTime);
+		previousTime = currentTime;
+		
 		okno.osveziGUI();
-		System.out.println(igra.stanje());
 		switch (igra.stanje()) {
 		case ZMAGA_C: 
 		case ZMAGA_B: 
 		case NEODLOCENO: 
 			return; // odhajamo iz metode igramo
 		case V_TEKU: 
+			System.out.println("prostih vrst se " + igra.getVrste().keySet().size());
 			Igralec igralec = igra.getIgralecNaPotezi();
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 			switch (vrstaNaPotezi) {
@@ -50,6 +63,7 @@ public class Vodja {
 			case R:
 				igrajRacunalnikovoPotezo ();
 			}
+			
 		}
 	}
 	

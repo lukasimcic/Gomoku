@@ -3,8 +3,10 @@
 package logika;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import splosno.Koordinati;
 
@@ -14,7 +16,7 @@ public class Igra {
 	
 	private Polje[][] plosca; // Igralna plošèa
 	
-	private final List<Vrsta> VRSTE; // vse možne kombinacije 5 zaporednih polj
+	private Hashtable<Vrsta, Integer> vrste; // kombinacije zaporednih 5 polj, ki se lahko dajo zmago
 	
 	public Igralec naPotezi; // Igralec, ki je trenutno na potezi.
 	
@@ -25,7 +27,7 @@ public class Igra {
 	// vse potrebno za prièetek nove igre
 	public Igra(int N) {
 		this.N = N;
-		this.VRSTE = vrste(N);
+		this.vrste = vrste(N);
 		setAlgoritem(algoritem);
 		plosca = new Polje[N][N];
 		for (int i = 0; i < N; i++) {
@@ -40,7 +42,7 @@ public class Igra {
 	// identièna kopija igre
 	public Igra(Igra igra) {
 		this.N = igra.N;
-		this.VRSTE = vrste(N);
+		this.vrste = vrste(N);
 		this.plosca = new Polje[N][N];
 		setAlgoritem(igra.getAlgoritem());
 		for (int i = 0; i < N; i++) {
@@ -66,8 +68,8 @@ public class Igra {
 		return N;
 	}
 	
-	public List<Vrsta> getVRSTE () {
-		return VRSTE;
+	public Hashtable<Vrsta, Integer> getVrste () {
+		return vrste;
 	}
 	
 	public static void setAlgoritem (Algoritem alg) {
@@ -79,8 +81,8 @@ public class Igra {
 	}
 	
 	// ustvari seznam vseh možnih peteric - vrstic dolžine 5
-	private List<Vrsta> vrste(int N) {
-		List<Vrsta> vrste = new LinkedList<Vrsta>();
+	private Hashtable<Vrsta, Integer> vrste(int N) {
+		Hashtable<Vrsta, Integer> vrste = new Hashtable<Vrsta, Integer>();
 		int[][] smer = {{1,0}, {0,1}, {1,1}, {1,-1}};
 		for (int x = 0; x < N; x++) {
 			for (int y = 0; y < N; y++) {
@@ -96,7 +98,7 @@ public class Igra {
 							vrsta_x[k] = x + dx * k;
 							vrsta_y[k] = y + dy * k;
 						}
-						vrste.add(new Vrsta(vrsta_x, vrsta_y));
+						vrste.put(new Vrsta(vrsta_x, vrsta_y), 0);
 					}
 				}
 			}
@@ -121,29 +123,12 @@ public class Igra {
 		return seznamMoznihPotez.contains(p);
 	}
 	
-	/* lastnik zmagovalne vrste, èe je le ta zmagovalna
-	 * Vrsta je v tem primeru peterica polj iz treh možnih smeri: vodoravno, navpièno ali diagonalno.
-	 */
-	private Igralec cigavaVrsta(Vrsta t) {  
-		int count_B = 0;
-		int count_C = 0;
-		for (int k = 0; k < M && (count_B == 0 || count_C == 0); k++) {
-			switch (plosca[t.xList[k]][t.yList[k]]) {
-			case C: count_C += 1; break;
-			case B: count_B += 1; break;
-			case PRAZNO: break;
-			}
-		}
-		if (count_C == M) { return Igralec.C; }
-		else if (count_B == M) { return Igralec.B; }
-		else { return null; }
-	}
-	
 	// doloèi zmagovalno vrsto
 	public Vrsta zmagovalnaVrsta() {
-		for (Vrsta t : VRSTE) {
-			Igralec lastnik = cigavaVrsta(t);
-			if (lastnik != null) return t;
+		for (Map.Entry<Vrsta, Integer> entry : vrste.entrySet()) {
+			if (entry.getValue() == Igra.M) {
+				return entry.getKey();
+			}
 		}
 		return null;
 	}
@@ -178,6 +163,18 @@ public class Igra {
 			plosca[p.getX()][p.getY()] = naPotezi.getPolje();
 			seznamMoznihPotez.remove(p);
 			naPotezi = naPotezi.nasprotnik();
+			
+			// spremeni vrednosti vrst, neuporabne vrste izbrise iz slovarja
+			List<Vrsta> neuporabneVrste = new ArrayList<Vrsta>();
+			for (Vrsta v : vrste.keySet()) {
+				int ocena = v.ocenaVrste(this);
+				if (ocena == Igra.M + 1) {
+					neuporabneVrste.add(v);
+				}
+				vrste.replace(v, ocena);
+			}
+			vrste.keySet().removeAll(neuporabneVrste);
+			
 			return true;
 		}
 		else {
