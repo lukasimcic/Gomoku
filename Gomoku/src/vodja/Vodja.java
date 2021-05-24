@@ -10,11 +10,14 @@ import inteligenca.Inteligenca;
 import logika.Algoritem;
 import logika.Igra;
 import logika.Igralec;
+import logika.Vrsta;
 import splosno.Koordinati;
 
 public class Vodja {	
 	
 	private static long previousTime; // meri cas potez
+	
+	private static double longestTime; // meri najdaljsi cas poteze v igri
 	
 	public static Map<Igralec,VrstaIgralca> vrstaIgralca;
 	
@@ -24,9 +27,9 @@ public class Vodja {
 	
 	public static boolean clovekNaVrsti = false;
 	
-	public static int odzivniCasRacunalnika = 1;
+	public static int odzivniCasRacunalnika = 0;
 	
-	private static int globina = 2;
+	private static int globina = 3;
 	
 	// ustvari novo igro in jo zažene
 	public static void igramoNovoIgro (int N) {
@@ -43,17 +46,17 @@ public class Vodja {
 		// printa koliko casa rabi za eno potezo
 		long currentTime = System.currentTimeMillis();
 		double elapsedTime = (currentTime - previousTime) / 1000.0;
-		System.out.println("Time in seconds : " + elapsedTime);
+		longestTime = Math.max(longestTime, elapsedTime);
+		// System.out.println("Time in seconds : " + elapsedTime);
 		previousTime = currentTime;
 		
 		okno.osveziGUI();
 		switch (igra.stanje()) {
-		case ZMAGA_C: 
-		case ZMAGA_B: 
-		case NEODLOCENO: 
+		case ZMAGA_C: System.out.println("zmaga z " + longestTime);
+		case ZMAGA_B: System.out.println("zmaga z " + longestTime);
+		case NEODLOCENO: System.out.println("neodloceno z " + longestTime);
 			return; // odhajamo iz metode igramo
 		case V_TEKU: 
-			System.out.println("prostih vrst se " + igra.getVrste().keySet().size());
 			Igralec igralec = igra.getIgralecNaPotezi();
 			VrstaIgralca vrstaNaPotezi = vrstaIgralca.get(igralec);
 			switch (vrstaNaPotezi) {
@@ -61,6 +64,12 @@ public class Vodja {
 				clovekNaVrsti = true;
 				break;
 			case R:
+//				if (Igra.algoritem == Algoritem.MINIMAX) Igra.algoritem = Algoritem.ALFABETA;
+//				else Igra.algoritem = Algoritem.MINIMAX;
+//				
+//				System.out.println(" igra " + igra.getIgralecNaPotezi() + " z algoritmom " + Igra.algoritem);
+				
+				
 				igrajRacunalnikovoPotezo ();
 			}
 			

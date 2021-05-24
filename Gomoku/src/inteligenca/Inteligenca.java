@@ -24,22 +24,22 @@ public class Inteligenca extends KdoIgra {
 		this.globina = globina;
 	}	
 	
-	public static OcenjenaPoteza alfabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
+	public static OcenjenaPoteza alfabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz, int nivo) {
 		int ocena;
 		// ce sem racunalnik, maksimiramo oceno z zacetno oceno PORAZ
 		// ce sem pa clovek, minimiziramo oceno z zacetno oceno ZMAGA
 		if (igra.getIgralecNaPotezi() == jaz) {ocena = PORAZ;} else {ocena = ZMAGA;}
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
 		Koordinati kandidat = moznePoteze.get(0); // Možno je, da se ne spremeni vrednost kanditata. Zato ne more biti null.
-		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra); // drevo naredimo le na najboljsi tretini moznih potez
+		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra, nivo); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocenap;
-			if (globina==1) ocenap = op.ocena;
+			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA) ocenap = op.ocena;
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocenap = //negacija ocene z vidike drugega igralca
-						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz).ocena;
+						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz, nivo+1).ocena;
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
@@ -61,27 +61,27 @@ public class Inteligenca extends KdoIgra {
 	}
 	
 	// vrne seznam vseh potez, ki imajo najvecjo vrednost z vidike trenutnega igralca na potezi
-	public static List<OcenjenaPoteza> minimaxPoteze(Igra igra, int globina) {
+	public static List<OcenjenaPoteza> minimaxPoteze(Igra igra, int globina, int nivo) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
-		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra); // drevo naredimo le na najboljsi tretini moznih potez
+		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra, nivo); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocena;
-			if (globina == 1 || moznePoteze.size() == 1) ocena = op.ocena;
+			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA) ocena = op.ocena;
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocena = //negacija ocene z vidike drugega igralca
-						-minimaxPoteze(kopijaIgre, globina-1).get(0).ocena;
+						-minimaxPoteze(kopijaIgre, globina-1, nivo+1).get(0).ocena;
 			}
-			najboljsePoteze.addIfBest(new OcenjenaPoteza(op.poteza, ocena));			
+			najboljsePoteze.addIfBest(new OcenjenaPoteza(op.poteza, ocena));	
 		}
 		return najboljsePoteze.list();
 	}
 	
-	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra) {
+	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra, int nivo) {
 		int steviloMoznihPotez = moznePoteze.size();
-		int velikost = (int) steviloMoznihPotez / 3 + 1;
+		int velikost = (int) steviloMoznihPotez / (5 + nivo) + 1;
 		OcenjenaPotezaBuffer buffer;
 		if (steviloMoznihPotez < 3) buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
 		else buffer = new OcenjenaPotezaBuffer(velikost);
@@ -112,10 +112,10 @@ public class Inteligenca extends KdoIgra {
 	
 	public Koordinati izberiPotezo (Igra igra) {
 		if (igra.getAlgoritem() == Algoritem.MINIMAX) {
-			List<OcenjenaPoteza> ocenjenePoteze = minimaxPoteze(igra, globina);
+			List<OcenjenaPoteza> ocenjenePoteze = minimaxPoteze(igra, globina, 0);
 			int i = RANDOM.nextInt(ocenjenePoteze.size());	
 			return ocenjenePoteze.get(i).poteza;
 		}
-		else return alfabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi()).poteza;
+		else return alfabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi(), 0).poteza;
 	}
 }
