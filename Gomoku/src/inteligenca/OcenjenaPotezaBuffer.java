@@ -3,6 +3,9 @@ package inteligenca;
 import java.util.List;
 import java.util.LinkedList;
 
+/**
+ * Buffer ocenjenih potez
+ */
 public class OcenjenaPotezaBuffer {
 	
 	private int velikost;

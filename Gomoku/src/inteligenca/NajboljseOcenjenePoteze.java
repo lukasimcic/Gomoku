@@ -2,6 +2,9 @@ package inteligenca;
 
 import java.util.List;
 
+/**
+ * Seznam najboljše ocenjenih potez. 
+*/
 public class NajboljseOcenjenePoteze {
 	
 	private OcenjenaPotezaBuffer buffer;

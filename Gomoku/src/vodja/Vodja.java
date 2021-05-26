@@ -31,7 +31,10 @@ public class Vodja {
 	
 	private static int globina = 3;
 	
-	// ustvari novo igro in jo zažene
+	/** Ustvari novo igro in jo zažene.
+	 * 
+	 * @param N velikost igralne plošèe - N x N
+	 */
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
 		if (Igra.algoritem == Algoritem.MINIMAX) System.out.println("igramo z minimaxom");
@@ -40,10 +43,12 @@ public class Vodja {
 		igramo ();
 	}
 	
-	// potek igre
+	/**
+	 * Potek igre
+	 */
 	public static void igramo () {
 		
-		// printa koliko casa rabi za eno potezo
+		// print-a koliko casa rabi za eno potezo
 		long currentTime = System.currentTimeMillis();
 		double elapsedTime = (currentTime - previousTime) / 1000.0;
 		longestTime = Math.max(longestTime, elapsedTime);
@@ -68,6 +73,7 @@ public class Vodja {
 //				else Igra.algoritem = Algoritem.MINIMAX;
 //				
 //				System.out.println(" igra " + igra.getIgralecNaPotezi() + " z algoritmom " + Igra.algoritem);
+				//TODO: kaj je s temi vrsticami zgoraj
 				
 				
 				igrajRacunalnikovoPotezo ();
@@ -79,7 +85,10 @@ public class Vodja {
 	// naèin igranja raèunalnika
 	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(globina);
 	
-	// Odigra raèunalnikovo potezo in posodobi grafiko-nariše potezo. Preden odigra poèaka 2s oz. po izbiri.
+	/**
+	 *  Odigra raèunalnikovo potezo in posodobi grafiko - nariše potezo.
+	 *  Preden odigra poèaka 2s oziroma po izbiri.
+	 */
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
@@ -106,7 +115,11 @@ public class Vodja {
 		worker.execute();
 	}
 	
-	// odigra èlovekovo potezo, èe je možna in nadaljuje z igro
+	/**
+	 * Odigra èlovekovo potezo, èe je možna in nadaljuje z igro.
+	 * 
+	 * @param poteza izbrana poteza 
+	 */
 	public static void igrajClovekovoPotezo(Koordinati poteza) {
 		if (igra.odigraj(poteza)) clovekNaVrsti = false;
 		igramo ();

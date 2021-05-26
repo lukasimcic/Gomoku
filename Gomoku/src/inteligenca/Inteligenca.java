@@ -9,6 +9,10 @@ import splosno.Koordinati;
 import logika.Algoritem;
 import splosno.KdoIgra;
 
+/**
+ * Skrbi za pametno oz. smiselno igranje raèunalniškega igralca.
+ *
+ */
 public class Inteligenca extends KdoIgra {
 	
 	private int globina;
@@ -19,11 +23,28 @@ public class Inteligenca extends KdoIgra {
 	private static final int PORAZ = -ZMAGA;  // vrednost izgube
 	private static final int NEODLOC = 0;  // vrednost neodlocene igre	
 	
+	/**
+	 * 
+	 * Nov objekt inteligence.
+	 * 
+	 * @param globina globina rekurzije v algoritmih 
+	 */
 	public Inteligenca (int globina) {
 		super("racunalnik igra z globino " + globina);
 		this.globina = globina;
 	}	
 	
+	/**
+	 * Uporaba Alpha-Beta algoritma za doloèitev potez raèunalniškega igralca.
+	 * 
+	 * @param igra v kateri igri igramo
+	 * @param globina globina rekurzije
+	 * @param alpha alfa
+	 * @param beta beta
+	 * @param jaz iz katere perspektive ocenjujemo
+	 * @param nivo 
+	 * @return raèunalnikova poteza
+	 */
 	public static OcenjenaPoteza alfabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz, int nivo) {
 		int ocena;
 		// ce sem racunalnik, maksimiramo oceno z zacetno oceno PORAZ
@@ -60,7 +81,17 @@ public class Inteligenca extends KdoIgra {
 		return new OcenjenaPoteza (kandidat, ocena);
 	}
 	
-	// vrne seznam vseh potez, ki imajo najvecjo vrednost z vidike trenutnega igralca na potezi
+	// TODO: zakaj rabimo nivo v alfa-beta? kje se ga nastavi?
+	
+	/**
+	 * Seznam vseh potez, ki imajo najvecjo vrednost z vidike trenutnega igralca na potezi.
+	 * Raèunalnik bo za svojo potezo izbral eno izmed teh in ne vedno iste, zato je igra manj monotona.
+	 * 
+	 * @param igra igra v kateri išèemo ta seznam
+	 * @param globina globina rekurzije v algoritmu
+	 * @param nivo
+	 * @return seznam najboljše ocenjenih potez
+	 */
 	public static List<OcenjenaPoteza> minimaxPoteze(Igra igra, int globina, int nivo) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		List<Koordinati> moznePoteze = igra.seznamMoznihPotez;
@@ -79,6 +110,17 @@ public class Inteligenca extends KdoIgra {
 		return najboljsePoteze.list();
 	}
 	
+	//TODO : povsod kjer je nivo kot parameter napiši komentar za nivo
+	
+	/**
+	 * Seznam statièno ocenjenih najboljših potez, na katerih se nato uporablja minimax ali alfa-beta algoritem.
+	 * Pripomore k boljši èasovni uèinkovitosti algoritmov.
+	 * 
+	 * @param moznePoteze veljavne poteze v igri - prazna polja
+	 * @param igra igra katero naj metoda uporablja
+	 * @param nivo 
+	 * @return seznam nekaj najboljše ocenjenih potez
+	 */
 	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra, int nivo) {
 		int steviloMoznihPotez = moznePoteze.size();
 		int velikost = (int) steviloMoznihPotez / (5 + nivo) + 1;
@@ -102,6 +144,14 @@ public class Inteligenca extends KdoIgra {
 		return buffer.list(); 
 	}
 	
+	// TODO: s katere perspektive ocenjuje
+	
+	/**
+	 * Ocena pozicije v igri.
+	 * 
+	 * @param igra igra v kateri želimo oceniti pozicijo
+	 * @return ocena trenutne pozicije
+	 */
 	public static int oceniPozicijo(Igra igra) {
 		int ocena = 0;
 		for (int ocenaVrste : igra.getVrste().values()) {
@@ -110,6 +160,12 @@ public class Inteligenca extends KdoIgra {
 		return ocena;	
 	}
 	
+	/**
+	 * Izbere raèunalnikovo potezo glede na izbran algoritem.
+	 * 
+	 * @param igra igra v kateri naj se metoda izvede
+	 * @return raèunalnikova poteza
+	 */
 	public Koordinati izberiPotezo (Igra igra) {
 		if (igra.getAlgoritem() == Algoritem.MINIMAX) {
 			List<OcenjenaPoteza> ocenjenePoteze = minimaxPoteze(igra, globina, 0);
