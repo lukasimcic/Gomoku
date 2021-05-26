@@ -33,7 +33,7 @@ public class Vodja {
 	
 	public static int odzivniCasRacunalnika = 0;
 	
-	private static int globina = 3;
+	private static int globina = 2;
 	
 	/** 
 	 * Ustvari novo igro in jo zažene.
@@ -57,7 +57,7 @@ public class Vodja {
 		long currentTime = System.currentTimeMillis();
 		double elapsedTime = (currentTime - previousTime) / 1000.0;
 		longestTime = Math.max(longestTime, elapsedTime);
-		// System.out.println("Time in seconds : " + elapsedTime);
+		System.out.println("Time in seconds : " + elapsedTime);
 		previousTime = currentTime;
 		
 		okno.osveziGUI();

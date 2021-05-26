@@ -34,6 +34,11 @@ public class Inteligenca extends KdoIgra {
 		this.globina = globina;
 	}	
 	
+	// pri alfa beti je problem, da racunalnik ne naredi poteze, kjer bi blokiral nasprotnikovo zmago.
+	// problema sta dva:
+	// 1. vcasih ta poteza ni vkljucena v nekajNajboljsihPotez
+	// 2. v tistem krogu se druge poteze ne evalvirajo pravilno
+	
 	/**
 	 * Uporaba Alpha-Beta algoritma za doloèitev potez raèunalniškega igralca.
 	 * 
@@ -55,12 +60,13 @@ public class Inteligenca extends KdoIgra {
 		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra, nivo); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocenap;
-			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA) ocenap = op.ocena;
+			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA || op.ocena == PORAZ) ocenap = op.ocena;
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocenap = //negacija ocene z vidike drugega igralca
 						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz, nivo+1).ocena;
+				if (nivo == 0) System.out.println(op + " koncna ocena je " + ocenap);
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
@@ -98,12 +104,13 @@ public class Inteligenca extends KdoIgra {
 		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra, nivo); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocena;
-			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA) ocena = op.ocena;
+			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA || op.ocena == PORAZ) ocena = op.ocena;
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocena = //negacija ocene z vidike drugega igralca
 						-minimaxPoteze(kopijaIgre, globina-1, nivo+1).get(0).ocena;
+				if (nivo == 0) System.out.println(op + " koncna ocena je " + ocena);
 			}
 			najboljsePoteze.addIfBest(new OcenjenaPoteza(op.poteza, ocena));	
 		}
@@ -125,8 +132,9 @@ public class Inteligenca extends KdoIgra {
 		int steviloMoznihPotez = moznePoteze.size();
 		int velikost = (int) steviloMoznihPotez / (5 + nivo) + 1;
 		OcenjenaPotezaBuffer buffer;
-		if (steviloMoznihPotez < 3) buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
-		else buffer = new OcenjenaPotezaBuffer(velikost);
+		// if (steviloMoznihPotez < 3) buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
+		// else buffer = new OcenjenaPotezaBuffer(velikost);
+		buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
 		for (Koordinati p : moznePoteze) {
 			Igra kopijaIgre = new Igra(igra); 
 			kopijaIgre.odigraj(p); //poskusimo vsako potezo v novi kopiji igre
@@ -172,6 +180,9 @@ public class Inteligenca extends KdoIgra {
 			int i = RANDOM.nextInt(ocenjenePoteze.size());	
 			return ocenjenePoteze.get(i).poteza;
 		}
-		else return alfabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi(), 0).poteza;
+		else {
+			System.out.println("\n");
+			return alfabetaPoteze(igra, globina, PORAZ, ZMAGA, igra.getIgralecNaPotezi(), 0).poteza;
+		}
 	}
 }
