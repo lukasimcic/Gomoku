@@ -1,5 +1,3 @@
-// O = C, X = B
-
 package logika;
 
 import java.util.ArrayList;
@@ -10,13 +8,16 @@ import java.util.Map;
 
 import splosno.Koordinati;
 
+/**
+ * Logika potrebna za potek igre.
+ */
 public class Igra {
 	public int N; // velikost igralne plošèe je NxN
 	public static final int M = 5; // število zaporednih polj iste barve, ki zadostuje za zmago
 	
 	private Polje[][] plosca; // Igralna plošèa
 	
-	private Hashtable<Vrsta, Integer> vrste; // kombinacije zaporednih 5 polj, ki se lahko dajo zmago
+	private Hashtable<Vrsta, Integer> vrste; // kombinacije zaporednih 5 polj, ki lahko dajo zmago
 	
 	public Igralec naPotezi; // Igralec, ki je trenutno na potezi.
 	
@@ -24,7 +25,11 @@ public class Igra {
 	
 	public static Algoritem algoritem = Algoritem.MINIMAX; // raèunalnik priène igro z minimax algoritmom
 	
-	// vse potrebno za prièetek nove igre
+	/** 
+	 * Vse potrebno za prièetek nove igre
+	 * 
+	 * @param N dolžina/širina igralne plošèe
+	 */
 	public Igra(int N) {
 		this.N = N;
 		this.vrste = vrste(N);
@@ -39,7 +44,11 @@ public class Igra {
 		naPotezi = Igralec.C;
 	} 
 	
-	// identièna kopija igre
+	/** 
+	 * Ustvari kopijo igre
+	 * 
+	 * @param igra kopijo katere igre želimo
+	 */
 	public Igra(Igra igra) {
 		this.N = igra.N;
 		this.vrste = vrste(N);
@@ -80,7 +89,12 @@ public class Igra {
 		return algoritem;
 	}
 	
-	// ustvari seznam vseh možnih peteric - vrstic dolžine 5
+	/** 
+	 * Ustvari seznam vseh možnih peteric - vrstic dolžine 5
+	 * 
+	 * @param N dolžina/širina igralne plošèe
+	 * @return seznam peteric
+	 */
 	private Hashtable<Vrsta, Integer> vrste(int N) {
 		Hashtable<Vrsta, Integer> vrste = new Hashtable<Vrsta, Integer>();
 		int[][] smer = {{1,0}, {0,1}, {1,1}, {1,-1}};
@@ -106,7 +120,11 @@ public class Igra {
 		return vrste;
 	}
 	
-	// vsa prazna polja na igralni plošèi
+	/**
+	 * Vsa prazna polja na igralni plošèi, to so vse možne poteze.
+	 * 
+	 * @return možne poteze
+	 */
 	public List<Koordinati> trenutneMoznePoteze() {
 		LinkedList<Koordinati> trenutnoMozne = new LinkedList<Koordinati>();
 		for (int i = 0; i < N; i++) {
@@ -123,7 +141,11 @@ public class Igra {
 		return seznamMoznihPotez.contains(p);
 	}
 	
-	// doloèi zmagovalno vrsto
+	/**
+	 * Doloèi zmagovalno vrsto, èe ta obstaja.
+	 * 
+	 * @return zmagovalna vrsta/null
+	 */
 	public Vrsta zmagovalnaVrsta() {
 		for (Map.Entry<Vrsta, Integer> entry : vrste.entrySet()) {
 			if (entry.getValue() == Igra.M) {
@@ -133,7 +155,11 @@ public class Igra {
 		return null;
 	}
 	
-	// trenutno stanje v igri
+	/** 
+	 * Trenutno stanje v igri.
+	 * 
+	 * @return trenutno stanje
+	 */
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
 		Vrsta t = zmagovalnaVrsta();
@@ -157,7 +183,12 @@ public class Igra {
 		return stanje() != Stanje.V_TEKU;
 	}
 	
-	// odigra potezo, èe je izbrano polje prazno in jo izbriše iz seznama možnih potez
+	/**
+	 * Odigra potezo, èe je izbrano polje prazno in jo izbriše iz seznama možnih potez.
+	 * 
+	 * @param p koordinati poteze
+	 * @return vrednost izjave, da je bilo polje prazno
+	 */
 	public boolean odigraj(Koordinati p) {
 		if (plosca[p.getX()][p.getY()] == Polje.PRAZNO) {
 			plosca[p.getX()][p.getY()] = naPotezi.getPolje();

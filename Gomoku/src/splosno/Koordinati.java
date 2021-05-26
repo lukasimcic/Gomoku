@@ -1,5 +1,8 @@
 package splosno;
 
+/**
+ * Razred koordinat iz igralne plošèe
+ */
 public class Koordinati {
 	private int x;
 	private int y;

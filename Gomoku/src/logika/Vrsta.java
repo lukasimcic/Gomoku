@@ -39,7 +39,12 @@ public class Vrsta {
 		return false;
 	}
 	
-	// oceni dano peterico iz perspektive podanega igralca
+	/**
+	 * Oceni dano peterico iz perspektive igralca na potezi.
+	 * 
+	 * @param igra igra v kateri ocenjuje vrsto
+	 * @return ocena vrste
+	 */
 	public int ocenaVrste (Igra igra) {
 		Polje[][] plosca = igra.getPlosca();
 		int count_B = 0;
