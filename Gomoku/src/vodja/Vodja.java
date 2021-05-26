@@ -13,6 +13,10 @@ import logika.Igralec;
 import logika.Vrsta;
 import splosno.Koordinati;
 
+/**
+ * Vodenje poteka igre.
+ *
+ */
 public class Vodja {	
 	
 	private static long previousTime; // meri cas potez
@@ -31,7 +35,8 @@ public class Vodja {
 	
 	private static int globina = 3;
 	
-	/** Ustvari novo igro in jo zažene.
+	/** 
+	 * Ustvari novo igro in jo zažene.
 	 * 
 	 * @param N velikost igralne plošèe - N x N
 	 */
