@@ -25,7 +25,9 @@ import logika.Igra;
 import logika.Igralec;
 import logika.Stanje;
 
-
+/**
+ * Glavno okno aplikacije hrani trenutno stanje igre, omogoèa izbiro lastnosti igre in nadzoruje njen potek. *
+ */
 @SuppressWarnings("serial")
 public class GlavnoOkno extends JFrame implements ActionListener {
 	
@@ -48,7 +50,12 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	// velikost igralne plošèe (kvadratna N x N plošèa)
 	private int N;
 
-	
+	/**
+	 * Novo okno iz treh vertikalno razporejenih delov:
+	 * menu-ja, igralnega polja in statusne vrstice.  
+	 * 
+	 * @param N število polj v eni vrstici/stolpcu
+	 */
 	public GlavnoOkno(int N) {
 		
 		
@@ -58,7 +65,9 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		this.setLayout(new GridBagLayout());
 	
 		
-		// menu		
+		/* Menu:
+		 * izbira vrste igre in drugih lastnosti igre.
+		 */
 		JMenuBar menu_bar = new JMenuBar();
 		this.setJMenuBar(menu_bar);
 		
@@ -112,13 +121,26 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		
 	}
 	
-	
+	/**
+	 * Doda meni v menu-bar vrstico.
+	 * 
+	 * @param menubar vrstica z vsemi menu-ji
+	 * @param naslov poimenovanje menu-ja
+	 * @return menu z danim naslovom
+	 */
 	public JMenu dodajMenu(JMenuBar menubar, String naslov) {
 		JMenu menu = new JMenu(naslov);
 		menubar.add(menu);
 		return menu;
 	}
 	
+	/**
+	 * Doda možno izbiro v menu-ju.
+	 * 
+	 * @param menu menu, v katerega naj bo ta izbira
+	 * @param naslov poimenovanje izbire
+	 * @return izbira v menu-ju
+	 */
 	public JMenuItem dodajMenuItem(JMenu menu, String naslov) {
 		JMenuItem menuitem = new JMenuItem(naslov);
 		menu.add(menuitem);
@@ -126,7 +148,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		return menuitem;
 	}
 
-	// ukazi, ki se sprožijo ob izbiri elementa v menu-baru
+	/** 
+	 * Ukazi, ki se sprožijo ob izbiri elementa v menu-baru.
+	 * 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == igraClovekRacunalnik) {
@@ -203,6 +228,10 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		}
 	}
 
+	/**
+	 * 
+	 * Prikaže trenutno stanje v igri na igralni plošèi in v statusni vrstici.
+	 */
 	public void osveziGUI() {
 		if (Vodja.igra == null) {
 			status.setText("Igra ni v teku.");

@@ -17,24 +17,39 @@ import logika.Polje;
 import logika.Vrsta;
 import splosno.Koordinati;
 
-
+/**
+ * Pravokotno obmoèje, kjer se nahaja igralna površina.  
+ *
+ */
 @SuppressWarnings("serial")
 public class IgralnoPolje extends JPanel implements MouseListener {
 	
 	// velikost igralne plošèe
 	public int N;
 	
+	/**
+	 * Novo igralno polje z mrežo velikosti NxN.
+	 * 
+	 * @param N število polj v vsakem stolpci/vrstici v mreži
+	 */
 	public IgralnoPolje(int N) {
 		this.addMouseListener(this);
 		this.N = N;
 	}
 	
+	/**
+	 * Zaèetna velikost igralnega polja.
+	 */
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(600, 600);
 	}
 	
-	// centriranje èrt 
+	/**
+	 * Zaèetna toèka pomembna za centriranje èrt iz mreže glede na razmerje med širino in dolžino glavnega okna.
+	 * 
+	 * @return zaèetna toèka risanja mreže - èrt na igralnem polju
+	 */
 	private double[] startingPoint() {
 		double x_0, y_0;
 		double begin = (getWidth() - getHeight()) / 2;
@@ -51,7 +66,10 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	// Relativna širina èrte
 	private final static double LINE_WIDTH = 0.08;
 	
-	// Širina enega kvadratka
+	/** Širina enega kvadratka v mreži - igralnem polju
+	 * 
+	 * @return širina
+	 */
 	private double squareWidth() {
 		return Math.min(getWidth(), getHeight()) / N;
 	}
@@ -62,7 +80,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 	public Color barvaOzadja = new Color(245,222,179);
 	
 	/*
-	 * V grafièni kontekst nariše figuro - krog z izbrano barvo
+	 * V grafièni kontekst nariše krog z izbrano barvo, ki predstavlja figuro na polju.
 	 */
 	private void paintCircle(Graphics2D g2, int i, int j, Igralec barvaIgralca) {
 		double x_0 = startingPoint()[0];
@@ -76,6 +94,9 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		g2.fillOval((int)x, (int)y, (int)d , (int)d);
 	}
 	
+	/**
+	 * Risanje in barvanje v grafiènem kontekstu.
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -102,7 +123,7 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 			}
 		}
 		
-		// ÈRTE centrirane glede na okno
+		// Èrte centrirane glede na okno
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		
@@ -134,7 +155,10 @@ public class IgralnoPolje extends JPanel implements MouseListener {
 		
 	}
 	
-	// odèita mesto èlovekove poteze in jo odigra 
+	/** 
+	 * Odèita mesto èlovekove poteze in jo odigra.
+	 *  
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {		
 		if (Vodja.clovekNaVrsti) {

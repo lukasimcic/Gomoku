@@ -1,6 +1,12 @@
 import gui.GlavnoOkno;
 import vodja.Vodja;
 
+/**
+ * Zažene uporabniški vmesnik, t. j. okno v katerem lahko uporabnik igra Gomoku.
+ * 
+ * @author TS in LS
+ * 
+ */
 public class Gomoku {
 	
 	public static void main(String[] args) {
