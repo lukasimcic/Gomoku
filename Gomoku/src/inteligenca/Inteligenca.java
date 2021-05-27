@@ -60,13 +60,17 @@ public class Inteligenca extends KdoIgra {
 		List<OcenjenaPoteza> nekajNajboljsihPotez = nekajNajboljseOcenjenihPotez(moznePoteze, igra, nivo); // drevo naredimo le na najboljsi tretini moznih potez
 		for (OcenjenaPoteza op: nekajNajboljsihPotez) {
 			int ocenap;
+			if (op.ocena == ZMAGA && (nivo % 2 == 1)) return op;
 			if (globina == 1 || moznePoteze.size() == 1 || op.ocena == ZMAGA || op.ocena == PORAZ) ocenap = op.ocena;
 			else {
 				Igra kopijaIgre = new Igra(igra); 
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocenap = //negacija ocene z vidike drugega igralca
 						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz, nivo+1).ocena;
-				if (nivo == 0) System.out.println(op + " koncna ocena je " + ocenap);
+				if (nivo % 2 == 0) {
+					if (op.ocena == ZMAGA)
+					System.out.println(op + " koncna ocena je " + ocenap);
+				}
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
@@ -117,15 +121,13 @@ public class Inteligenca extends KdoIgra {
 		return najboljsePoteze.list();
 	}
 	
-	//TODO : povsod kjer je nivo kot parameter napiši komentar za nivo
-	
 	/**
 	 * Seznam statièno ocenjenih najboljših potez, na katerih se nato uporablja minimax ali alfa-beta algoritem.
 	 * Pripomore k boljši èasovni uèinkovitosti algoritmov.
 	 * 
 	 * @param moznePoteze veljavne poteze v igri - prazna polja
 	 * @param igra igra katero naj metoda uporablja
-	 * @param nivo 
+	 * @param nivo kako globoko smo v algoritmu, potrebuje se za doloèanje števila zaèetnih najboljših potez
 	 * @return seznam nekaj najboljše ocenjenih potez
 	 */
 	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra, int nivo) {
