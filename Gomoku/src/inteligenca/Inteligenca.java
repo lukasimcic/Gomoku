@@ -67,10 +67,7 @@ public class Inteligenca extends KdoIgra {
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocenap = //negacija ocene z vidike drugega igralca
 						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz, nivo+1).ocena;
-				if (nivo % 2 == 0) {
-					if (op.ocena == ZMAGA)
-					System.out.println(op + " koncna ocena je " + ocenap);
-				}
+				if (nivo == 0) System.out.println(op + " koncna ocena je " + ocenap);
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
