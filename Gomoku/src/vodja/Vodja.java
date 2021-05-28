@@ -1,6 +1,5 @@
 package vodja;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.SwingWorker;
@@ -8,10 +7,8 @@ import java.util.concurrent.TimeUnit;
 
 import gui.GlavnoOkno;
 import inteligenca.Inteligenca;
-import logika.Algoritem;
 import logika.Igra;
 import logika.Igralec;
-import logika.Vrsta;
 import splosno.Koordinati;
 
 /**
@@ -19,11 +16,6 @@ import splosno.Koordinati;
  *
  */
 public class Vodja {	
-	
-	private static long previousTime; // meri cas potez
-	private static ArrayList<Double> listTime = new ArrayList<Double>();
-	
-	private static double longestTime; // meri najdaljsi cas poteze v igri
 	
 	public static Map<Igralec,VrstaIgralca> vrstaIgralca;
 	
@@ -44,9 +36,6 @@ public class Vodja {
 	 */
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
-		if (Igra.algoritem == Algoritem.MINIMAX) System.out.println("igramo z minimaxom");
-		else System.out.println("igramo z alfa beto, globina je " + globina);
-		previousTime = System.currentTimeMillis();
 		igramo ();
 	}
 	
@@ -54,20 +43,11 @@ public class Vodja {
 	 * Potek igre
 	 */
 	public static void igramo () {
-		
-		// print-a koliko casa rabi za eno potezo
-		long currentTime = System.currentTimeMillis();
-		double elapsedTime = (currentTime - previousTime) / 1000.0;
-		longestTime = Math.max(longestTime, elapsedTime);
-		System.out.println("Time in seconds : " + elapsedTime);
-		if (elapsedTime > 5) listTime.add(elapsedTime);
-		previousTime = currentTime;
-		
 		okno.osveziGUI();
 		switch (igra.stanje()) {
 		case ZMAGA_C:
 		case ZMAGA_B:
-		case NEODLOCENO: System.out.println("najdaljsi cas: " + longestTime + ", " + listTime);
+		case NEODLOCENO:
 			return; // odhajamo iz metode igramo
 		case V_TEKU: 
 			Igralec igralec = igra.getIgralecNaPotezi();
@@ -77,13 +57,6 @@ public class Vodja {
 				clovekNaVrsti = true;
 				break;
 			case R:
-//				if (Igra.algoritem == Algoritem.MINIMAX) Igra.algoritem = Algoritem.ALFABETA;
-//				else Igra.algoritem = Algoritem.MINIMAX;
-//				
-//				System.out.println(" igra " + igra.getIgralecNaPotezi() + " z algoritmom " + Igra.algoritem);
-				//TODO: kaj je s temi vrsticami zgoraj
-				
-				
 				igrajRacunalnikovoPotezo ();
 			}
 			

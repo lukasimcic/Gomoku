@@ -18,6 +18,11 @@ public class OcenjenaPotezaBuffer {
 	}
 	
 
+	/**
+	 * V buffer doda potezo, tako da je v njem vedno najveè toliko, kot je velikost najbolje ocenjenih potez.
+	 * 
+	 * @param ocenjenaPoteza poteza, ki jo zelimo dodati
+	 */
 	public void add(OcenjenaPoteza ocenjenaPoteza) {
 		int i = 0;
 		for (OcenjenaPoteza op : getBuffer()) {

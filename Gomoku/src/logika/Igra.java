@@ -50,7 +50,7 @@ public class Igra {
 	/** 
 	 * Ustvari kopijo igre
 	 * 
-	 * @param igra kopijo katere igre želimo
+	 * @param igra kopijo ki jo igre želimo
 	 */
 	public Igra(Igra igra) {
 		this.N = igra.N;
@@ -221,7 +221,6 @@ public class Igra {
 	
 	/**
 	 * Razveljavi zadnjo odigrano potezo.
-	 * 
 	 */
 	public void razveljaviZadnjoPotezo() {
 		if (zadnjaPoteza != null) {

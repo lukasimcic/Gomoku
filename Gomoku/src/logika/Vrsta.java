@@ -22,23 +22,6 @@ public class Vrsta {
 		return "Vrsta [x=" + Arrays.toString(xList) + ", y=" + Arrays.toString(yList) + "]";
 	}
 	
-	public boolean vsebuje(int x0, int y0) {
-		boolean vsebuje = false;
-		for (int x : xList) {
-			if (x == x0) {
-				vsebuje = true;
-				break;
-			}
-		}
-		if (! vsebuje) return false;
-		for (int y : yList) {
-			if (y == y0) {
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	/**
 	 * Oceni dano peterico iz perspektive igralca na potezi.
 	 * 
@@ -56,7 +39,7 @@ public class Vrsta {
 			case PRAZNO: break;
 			}
 		}
-		if (count_B > 0 && count_C > 0) return Igra.M + 1;  // ta vrsta se bo zbrisala iz slovarja vrst
+		if (count_B > 0 && count_C > 0) return Igra.M + 1;  // ta vrsta se bo izbrisala iz slovarja vrst
 		else if (igra.getIgralecNaPotezi() == Igralec.C) { return count_B - count_C; }
 		else { return count_C - count_B; }
 	}
