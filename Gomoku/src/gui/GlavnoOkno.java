@@ -212,7 +212,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		else if (e.getSource() == algoritem) {
 			String[] algoritmi = {"minimax", "alfa beta"};
 			int x = JOptionPane.showOptionDialog(this, "Izberite algoritem:",
-	                "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, algoritmi, algoritmi[0]);
+	                "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, algoritmi, algoritmi[1]);
 			if (x == 0) Igra.setAlgoritem(Algoritem.MINIMAX);
 			else if (x == 1) Igra.setAlgoritem(Algoritem.ALFABETA);
 		}
