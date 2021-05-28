@@ -67,7 +67,7 @@ public class Inteligenca extends KdoIgra {
 				kopijaIgre.odigraj(op.poteza); //poskusimo vsako potezo v novi kopiji igre
 				ocenap = //negacija ocene z vidike drugega igralca
 						-alfabetaPoteze(kopijaIgre, globina-1, alpha, beta, jaz, nivo+1).ocena;
-				if (nivo == 0) System.out.println(op + " koncna ocena je " + ocenap);
+				// if (nivo == 0) System.out.println(op + " koncna ocena je " + ocenap);
 			}
 			if (igra.getIgralecNaPotezi() == jaz) { // Maksimiramo oceno
 				if (ocenap > ocena) { // mora biti > namesto >=
@@ -129,11 +129,11 @@ public class Inteligenca extends KdoIgra {
 	 */
 	public static List<OcenjenaPoteza> nekajNajboljseOcenjenihPotez(List<Koordinati> moznePoteze, Igra igra, int nivo) {
 		int steviloMoznihPotez = moznePoteze.size();
-		int velikost = (int) steviloMoznihPotez / (5 + nivo) + 1;
+		int velikost = (int) 3 * steviloMoznihPotez / (5 + 2 * nivo);
 		OcenjenaPotezaBuffer buffer;
-		// if (steviloMoznihPotez < 3) buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
-		// else buffer = new OcenjenaPotezaBuffer(velikost);
-		buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
+		if (steviloMoznihPotez < 3) buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
+		else buffer = new OcenjenaPotezaBuffer(velikost);
+		// buffer = new OcenjenaPotezaBuffer(steviloMoznihPotez);
 		for (Koordinati p : moznePoteze) {
 			Igra kopijaIgre = new Igra(igra); 
 			kopijaIgre.odigraj(p); //poskusimo vsako potezo v novi kopiji igre

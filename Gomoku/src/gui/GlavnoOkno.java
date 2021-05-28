@@ -8,7 +8,9 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
+import java.util.concurrent.TimeUnit;
 
+import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -46,6 +48,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem algoritem;
 	private JMenuItem cas;
 	private JMenuItem barvaOzadja;
+	private JMenuItem razveljavi;
 
 	// velikost igralne plošèe (kvadratna N x N plošèa)
 	private int N;
@@ -87,6 +90,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		ime = dodajMenuItem(lastnosti_igralcev, "imena igralcev");
 		algoritem = dodajMenuItem(lastnosti_igralcev, "algoritem");
 		cas = dodajMenuItem(lastnosti_igralcev, "èas raèunalnika");
+		razveljavi = dodajMenuItem(lastnosti_igralcev, "razveljavi potezo");
 		
 		barvaOzadja = dodajMenuItem(lastnosti_graficnega_vmesnika, "barva ozadja");
 		
@@ -147,7 +151,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		menuitem.addActionListener(this);
 		return menuitem;
 	}
-
+	
 	/** 
 	 * Ukazi, ki se sprožijo ob izbiri elementa v menu-baru.
 	 * 
@@ -224,6 +228,19 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 			if (barva != null)  {
 				polje.barvaOzadja = barva;
 				polje.repaint();
+			}
+		}
+		else if (e.getSource() == razveljavi) { // èe igra raèunalnik proti raèunalniku ne naredi nièesar
+			if (Vodja.vrstaIgralca.get(Vodja.igra.getIgralecNaPotezi().nasprotnik()) == VrstaIgralca.C) { // razveljavljamo èlovekovo potezo
+				Vodja.igra.razveljaviZadnjoPotezo();
+				polje.repaint();
+			}
+			else {
+				if (Vodja.vrstaIgralca.get(Vodja.igra.getIgralecNaPotezi()) == VrstaIgralca.C) { // razveljavljamo raèunalnikovo in èlovekovo potezo
+					Vodja.igra.razveljaviZadnjoPotezo();
+					Vodja.igra.razveljaviZadnjoPotezo();
+					polje.repaint();
+				}
 			}
 		}
 	}

@@ -19,6 +19,9 @@ public class Igra {
 	
 	private Hashtable<Vrsta, Integer> vrste; // kombinacije zaporednih 5 polj, ki lahko dajo zmago
 	
+	private Koordinati zadnjaPoteza;
+	private Koordinati predzadnjaPoteza;
+	
 	public Igralec naPotezi; // Igralec, ki je trenutno na potezi.
 	
 	public List<Koordinati> seznamMoznihPotez = new ArrayList<>(); // seznam polj na igralni plošèi, ki so še prazna
@@ -206,11 +209,37 @@ public class Igra {
 			}
 			vrste.keySet().removeAll(neuporabneVrste);
 			
+			predzadnjaPoteza = zadnjaPoteza;
+			zadnjaPoteza = p;
+			
 			return true;
 		}
 		else {
 			return false;
 		}
+	}
+	
+	public void razveljaviZadnjoPotezo() {
+		if (zadnjaPoteza != null) {
+			plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.PRAZNO;
+		
+			seznamMoznihPotez.add(zadnjaPoteza);
+			naPotezi = naPotezi.nasprotnik();
+			
+			List<Vrsta> neuporabneVrste = new ArrayList<Vrsta>();
+			for (Vrsta v : vrste(N).keySet()) {
+				int ocena = v.ocenaVrste(this);
+				if (ocena == Igra.M + 1) {
+					neuporabneVrste.add(v);
+				}
+				vrste.replace(v, ocena);
+			}
+			vrste.keySet().removeAll(neuporabneVrste);
+			
+			zadnjaPoteza = predzadnjaPoteza;
+			predzadnjaPoteza = null;
+		}
+			
 	}
 
 	

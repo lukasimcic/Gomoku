@@ -1,5 +1,6 @@
 package vodja;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.swing.SwingWorker;
@@ -20,6 +21,7 @@ import splosno.Koordinati;
 public class Vodja {	
 	
 	private static long previousTime; // meri cas potez
+	private static ArrayList<Double> listTime = new ArrayList<Double>();
 	
 	private static double longestTime; // meri najdaljsi cas poteze v igri
 	
@@ -58,13 +60,14 @@ public class Vodja {
 		double elapsedTime = (currentTime - previousTime) / 1000.0;
 		longestTime = Math.max(longestTime, elapsedTime);
 		System.out.println("Time in seconds : " + elapsedTime);
+		if (elapsedTime > 5) listTime.add(elapsedTime);
 		previousTime = currentTime;
 		
 		okno.osveziGUI();
 		switch (igra.stanje()) {
-		case ZMAGA_C: System.out.println("zmaga z " + longestTime);
-		case ZMAGA_B: System.out.println("zmaga z " + longestTime);
-		case NEODLOCENO: System.out.println("neodloceno z " + longestTime);
+		case ZMAGA_C:
+		case ZMAGA_B:
+		case NEODLOCENO: System.out.println("najdaljsi cas: " + longestTime + ", " + listTime);
 			return; // odhajamo iz metode igramo
 		case V_TEKU: 
 			Igralec igralec = igra.getIgralecNaPotezi();
