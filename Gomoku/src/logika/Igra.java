@@ -26,7 +26,7 @@ public class Igra {
 	
 	public List<Koordinati> seznamMoznihPotez = new ArrayList<>(); // seznam polj na igralni plošèi, ki so še prazna
 	
-	public static Algoritem algoritem = Algoritem.MINIMAX; // raèunalnik priène igro z minimax algoritmom
+	public static Algoritem algoritem = Algoritem.ALFABETA; // raèunalnik priène igro z minimax algoritmom
 	
 	/** 
 	 * Vse potrebno za prièetek nove igre
