@@ -8,9 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.EnumMap;
-import java.util.concurrent.TimeUnit;
 
-import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -25,7 +23,6 @@ import vodja.VrstaIgralca;
 import logika.Algoritem;
 import logika.Igra;
 import logika.Igralec;
-import logika.Stanje;
 
 /**
  * Glavno okno aplikacije hrani trenutno stanje igre, omogoèa izbiro lastnosti igre in nadzoruje njen potek. *
@@ -49,6 +46,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 	private JMenuItem cas;
 	private JMenuItem barvaOzadja;
 	private JMenuItem razveljavi;
+	private JMenuItem globina;
 
 	// velikost igralne plošèe (kvadratna N x N plošèa)
 	private int N;
@@ -90,6 +88,7 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 		ime = dodajMenuItem(lastnosti_igralcev, "imena igralcev");
 		algoritem = dodajMenuItem(lastnosti_igralcev, "algoritem");
 		cas = dodajMenuItem(lastnosti_igralcev, "èas raèunalnika");
+		globina = dodajMenuItem(lastnosti_igralcev, "težavnost");
 		razveljavi = dodajMenuItem(lastnosti_igralcev, "razveljavi potezo");
 		
 		barvaOzadja = dodajMenuItem(lastnosti_graficnega_vmesnika, "barva ozadja");
@@ -242,6 +241,14 @@ public class GlavnoOkno extends JFrame implements ActionListener {
 					polje.repaint();
 				}
 			}
+		}
+		else if (e.getSource() == globina) {
+			String[] tezavnosti = {"lahko", "srednje", "težko"};
+			int x = JOptionPane.showOptionDialog(this, "Izberite težavnost:",
+	                "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, tezavnosti, tezavnosti[1]);
+			if (x == 0) Vodja.globina = 1;
+			else if (x == 1) Vodja.globina = 2;
+			else if (x == 2) Vodja.globina = 3;
 		}
 	}
 

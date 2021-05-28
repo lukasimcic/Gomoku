@@ -219,6 +219,10 @@ public class Igra {
 		}
 	}
 	
+	/**
+	 * Razveljavi zadnjo odigrano potezo.
+	 * 
+	 */
 	public void razveljaviZadnjoPotezo() {
 		if (zadnjaPoteza != null) {
 			plosca[zadnjaPoteza.getX()][zadnjaPoteza.getY()] = Polje.PRAZNO;

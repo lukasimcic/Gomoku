@@ -35,7 +35,7 @@ public class Vodja {
 	
 	public static int odzivniCasRacunalnika = 0;
 	
-	private static int globina = 2;
+	public static int globina = 2;
 	
 	/** 
 	 * Ustvari novo igro in jo zažene.
@@ -45,7 +45,7 @@ public class Vodja {
 	public static void igramoNovoIgro (int N) {
 		igra = new Igra (N);
 		if (Igra.algoritem == Algoritem.MINIMAX) System.out.println("igramo z minimaxom");
-		else System.out.println("igramo z alfa beto");
+		else System.out.println("igramo z alfa beto, globina je " + globina);
 		previousTime = System.currentTimeMillis();
 		igramo ();
 	}
@@ -90,8 +90,12 @@ public class Vodja {
 		}
 	}
 	
-	// naèin igranja raèunalnika
-	public static Inteligenca racunalnikovaInteligenca = new Inteligenca(globina);
+	/**
+	 *  Naredi nov objekt razreda Inteligenca z dano globino
+	 */
+	public static Inteligenca racunalnikovaInteligenca() {
+		return new Inteligenca(globina);
+	}
 	
 	/**
 	 *  Odigra raèunalnikovo potezo in posodobi grafiko - nariše potezo.
@@ -102,7 +106,7 @@ public class Vodja {
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
 			@Override
 			protected Koordinati doInBackground() {
-				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
+				Koordinati poteza = racunalnikovaInteligenca().izberiPotezo(igra);
 				try {TimeUnit.SECONDS.sleep(odzivniCasRacunalnika);} catch (Exception e) {};
 				return poteza;
 			}
