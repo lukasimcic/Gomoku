@@ -25,7 +25,7 @@ public class Vodja {
 	
 	public static boolean clovekNaVrsti = false;
 	
-	public static int odzivniCasRacunalnika = 0;
+	public static int odzivniCasRacunalnika = 1;
 	
 	public static int globina = 2;
 	
